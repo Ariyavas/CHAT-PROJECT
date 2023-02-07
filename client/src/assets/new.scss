@@ -1,11 +1,12 @@
 $basecolor: #ffffff;
 
-* {
-  margin: 0;
-  padding: 0;
-}
-
 .login {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 15%;
+
   .box-form {
     margin: 0 auto;
     width: 70%;
@@ -364,59 +365,79 @@ $basecolor: #ffffff;
 }
 
 .messagebutton {
-  button {
-    width: 12rem;
-    height: 3rem;
-    border-radius: 0.5rem 2rem;
-    background-color: $basecolor;
+  .border-main {
+    border: #3b3e49;
   }
-
-  button:hover {
-    background-color: #3b5998;
-    color: $basecolor;
-  }
-
   .centerBox {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
-    min-height: 100vh;
-  }
-  
-  img {
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
+    min-height: 80vh;
+
+    button {
+      box-shadow: rgba(255, 240, 35, 0.4) 5px 5px,
+        rgba(255, 240, 35, 0.3) 10px 10px, rgba(255, 240, 35, 0.2) 15px 15px,
+        rgba(255, 240, 35, 0.1) 20px 20px, rgba(255, 240, 35, 0.05) 25px 25px;
+      width: 12rem;
+      height: 3rem;
+      border-radius: 20em 40rem 20rem 40rem;
+      background-color: $basecolor;
+    }
+
+    button:hover {
+      background-color: rgb(255, 240, 35);
+      color: #000;
+    }
   }
 
   nav {
-    background-color: #1dcaff;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
+      rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,
+      rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset,
+      rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px,
+      rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px,
+      rgba(0, 0, 0, 0.09) 0px 32px 16px;
+    background-color: #ffdc17;
     padding: 5px 1rem 5px 1rem;
-  }
-
-  ul {
-    list-style-type: none;
-    margin: 0;
+    border-radius: 300px;
+    margin-top: 1.4rem;
+    margin-left: 4rem;
+    margin-right: 4rem;
     padding: 0;
-    overflow: hidden;
-  }
 
-  li {
-    float: left;
-  }
+    ul {
+      list-style: none;
+      overflow: hidden;
+      padding-left: 2rem;
+      padding-right: 2rem;
 
-  a {
-    float: right;
-    width: 4rem;
-    height: 4rem;
-    text-align: center;
-    padding-right: 2rem;;
-  }
+      .right-ul {
+        float: right;
+      }
 
-  li a {
-    display: block;
-    padding: 8px;
-    background-color: #dddddd;
+      .left-ul {
+        float: left;
+      }
+
+      a {
+        text-decoration: unset;
+      }
+
+      li {
+        width: 3rem;
+        height: 4rem;
+        padding-right: 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      img {
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
   }
 }

@@ -1,9 +1,11 @@
 <template>
     <nav>
         <ul>
-            <li>CHAT</li>
-            <a href="">LOGOUT</a>
-            <a href=""><img src="https://previews.123rf.com/images/vitechek/vitechek1912/vitechek191200200/137940092-user-login-or-authenticate-icon-human-person-symbol-vector.jpg" alt=""></a>
+            <li class="left-ul"><a href="">CHAT</a></li>
+            <li class="right-ul"><a href="">LOGOUT</a></li>
+            <li class="right-ul"><a href=""><img
+                        src="https://previews.123rf.com/images/vitechek/vitechek1912/vitechek191200200/137940092-user-login-or-authenticate-icon-human-person-symbol-vector.jpg"
+                        alt=""></a></li>
         </ul>
     </nav>
     <div class="centerBox">
