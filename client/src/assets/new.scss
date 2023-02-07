@@ -1,0 +1,422 @@
+$basecolor: #ffffff;
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.login {
+  .box-form {
+    margin: 0 auto;
+    width: 70%;
+    background: $basecolor;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    flex: 1 1 100%;
+    align-items: stretch;
+    justify-content: space-between;
+    box-shadow: 0 0 20px 6px #090b6f85;
+  }
+  @media (max-width: 980px) {
+    .box-form {
+      flex-flow: wrap;
+      text-align: center;
+      align-content: center;
+      align-items: center;
+    }
+  }
+  .box-form div {
+    height: auto;
+  }
+  .box-form .left {
+    color: $basecolor;
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    background-image: url("https://static.vecteezy.com/system/resources/thumbnails/002/058/353/small_2x/colorful-abstract-background-free-vector.jpg");
+    overflow: hidden;
+  }
+  .box-form .left .overlay {
+    padding: 30px;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.2);
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .box-form .left .overlay h1 {
+    font-size: 10vmax;
+    line-height: 1;
+    font-weight: 900;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  }
+  .box-form .left .overlay span p {
+    margin-top: 30px;
+    font-weight: 900;
+  }
+  .box-form .left .overlay span a {
+    background: #3b5998;
+    color: $basecolor;
+    margin-top: 10px;
+    padding: 14px 50px;
+    border-radius: 100px;
+    display: inline-block;
+    box-shadow: 0 3px 6px 1px #042d4657;
+  }
+  .box-form .left .overlay span a:last-child {
+    background: #1dcaff;
+    margin-left: 30px;
+  }
+  .box-form .right {
+    padding: 60px;
+    overflow: hidden;
+  }
+  @media (max-width: 980px) {
+    .box-form .right {
+      width: 100%;
+    }
+  }
+  .box-form .right h5 {
+    font-size: 2vmax;
+    line-height: 0;
+  }
+  .box-form .right p {
+    font-size: 24px;
+    color: #b0b3b9;
+  }
+  .box-form .right .inputs {
+    overflow: hidden;
+  }
+  .box-form .right input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 30px;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    border-bottom: 2px solid #b0b3b9;
+  }
+  .box-form .right .remember-me--forget-password {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .box-form .right .remember-me--forget-password input {
+    margin: 0;
+    margin-right: 7px;
+    width: auto;
+  }
+  .box-form .right button {
+    color: $basecolor;
+    font-size: 16px;
+    padding: 12px 35px;
+    border-radius: 50px;
+    display: inline-block;
+    border: 0;
+    outline: 0;
+    box-shadow: 0px 4px 20px 0px #49c628a6;
+    background-image: linear-gradient(135deg, #70f570 10%, #49c628 100%);
+  }
+
+  label {
+    display: block;
+    position: relative;
+    margin-left: 30px;
+  }
+}
+
+.chatbox {
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    background-color: #abd9e9;
+    font-family: Arial;
+  }
+  #container {
+    width: 750px;
+    height: 800px;
+    background: #eff3f7;
+    margin: 0 auto;
+    font-size: 0;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  aside {
+    width: 260px;
+    height: 800px;
+    background-color: #3b3e49;
+    display: inline-block;
+    font-size: 15px;
+    vertical-align: top;
+  }
+  main {
+    width: 490px;
+    height: 800px;
+    display: inline-block;
+    font-size: 15px;
+    vertical-align: top;
+  }
+
+  aside header {
+    padding: 30px 20px;
+  }
+  aside input {
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 50px 0 20px;
+    background-color: #5e616a;
+    border: none;
+    border-radius: 3px;
+    color: #fff;
+    background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/1940306/ico_search.png);
+    background-repeat: no-repeat;
+    background-position: 170px;
+    background-size: 40px;
+  }
+  aside input::placeholder {
+    color: #fff;
+  }
+  aside ul {
+    padding-left: 0;
+    margin: 0;
+    list-style-type: none;
+    overflow-y: scroll;
+    height: 690px;
+  }
+  aside li {
+    padding: 10px 0;
+  }
+  aside li:hover {
+    background-color: #5e616a;
+  }
+  h2,
+  h3 {
+    margin: 0;
+  }
+  aside li img {
+    border-radius: 50%;
+    margin-left: 20px;
+    margin-right: 8px;
+  }
+  aside li div {
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 12px;
+  }
+  aside li h2 {
+    font-size: 14px;
+    color: #fff;
+    font-weight: normal;
+    margin-bottom: 5px;
+  }
+  aside li h3 {
+    font-size: 12px;
+    color: #7e818a;
+    font-weight: normal;
+  }
+
+  .status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 7px;
+  }
+  .green {
+    background-color: #58b666;
+  }
+  .orange {
+    background-color: #ff725d;
+  }
+  .blue {
+    background-color: #6fbced;
+    margin-right: 0;
+    margin-left: 7px;
+  }
+
+  main header {
+    height: 110px;
+    padding: 30px 20px 30px 40px;
+  }
+  main header > * {
+    display: inline-block;
+    vertical-align: top;
+  }
+  main header img:first-child {
+    border-radius: 50%;
+  }
+  main header img:last-child {
+    width: 24px;
+    margin-top: 8px;
+  }
+  main header div {
+    margin-left: 10px;
+    margin-right: 145px;
+  }
+  main header h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  main header h3 {
+    font-size: 14px;
+    font-weight: normal;
+    color: #7e818a;
+  }
+
+  #chat {
+    padding-left: 0;
+    margin: 0;
+    list-style-type: none;
+    overflow-y: scroll;
+    height: 535px;
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+  }
+  #chat li {
+    padding: 10px 30px;
+  }
+  #chat h2,
+  #chat h3 {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: normal;
+  }
+  #chat h3 {
+    color: #bbb;
+  }
+  #chat .entete {
+    margin-bottom: 5px;
+  }
+  #chat .message {
+    padding: 20px;
+    color: #fff;
+    line-height: 25px;
+    max-width: 90%;
+    display: inline-block;
+    text-align: left;
+    border-radius: 5px;
+  }
+  #chat .me {
+    text-align: right;
+  }
+  #chat .you .message {
+    background-color: #58b666;
+  }
+  #chat .me .message {
+    background-color: #6fbced;
+  }
+  #chat .triangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 10px 10px 10px;
+  }
+  #chat .you .triangle {
+    border-color: transparent transparent #58b666 transparent;
+    margin-left: 15px;
+  }
+  #chat .me .triangle {
+    border-color: transparent transparent #6fbced transparent;
+    margin-left: 375px;
+  }
+
+  main footer {
+    height: 155px;
+    padding: 20px 30px 10px 20px;
+  }
+  main footer textarea {
+    resize: none;
+    border: none;
+    display: block;
+    width: 100%;
+    height: 80px;
+    border-radius: 3px;
+    padding: 20px;
+    font-size: 13px;
+    margin-bottom: 13px;
+  }
+  main footer textarea::placeholder {
+    color: #ddd;
+  }
+  main footer img {
+    height: 30px;
+    cursor: pointer;
+  }
+  main footer a {
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #6fbced;
+    vertical-align: top;
+    margin-left: 333px;
+    margin-top: 5px;
+    display: inline-block;
+  }
+
+  img {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+.messagebutton {
+  button {
+    width: 12rem;
+    height: 3rem;
+    border-radius: 0.5rem 2rem;
+    background-color: $basecolor;
+  }
+
+  button:hover {
+    background-color: #3b5998;
+    color: $basecolor;
+  }
+
+  .centerBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+  }
+  
+  img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+  }
+
+  nav {
+    background-color: #1dcaff;
+    padding: 5px 1rem 5px 1rem;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  li {
+    float: left;
+  }
+
+  a {
+    float: right;
+    width: 4rem;
+    height: 4rem;
+    text-align: center;
+    padding-right: 2rem;;
+  }
+
+  li a {
+    display: block;
+    padding: 8px;
+    background-color: #dddddd;
+  }
+}
