@@ -10,7 +10,7 @@ const socketStart = (io: any) => {
       console.log(`Connected with socket_id : ${socket.id}`);
       const socket_data = socket.request._query;
 
-      // console.log(socket_data.user_id);
+      console.log(socket_data.user_id);
 
       if (
         !socket_data ||

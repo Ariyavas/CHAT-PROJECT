@@ -1,4 +1,5 @@
 $basecolor: #ffffff;
+$basecolor-black: #000;
 
 .login {
   min-height: 100vh;
@@ -136,6 +137,15 @@ $basecolor: #ffffff;
     background-color: #abd9e9;
     font-family: Arial;
   }
+
+  .close {
+    text-decoration: unset;
+    position: absolute;
+    opacity: 0.6;
+    color: $basecolor;
+    margin: 0.5rem;
+  }
+
   #container {
     width: 750px;
     height: 800px;
@@ -376,9 +386,6 @@ $basecolor: #ffffff;
     min-height: 80vh;
 
     button {
-      box-shadow: rgba(255, 240, 35, 0.4) 5px 5px,
-        rgba(255, 240, 35, 0.3) 10px 10px, rgba(255, 240, 35, 0.2) 15px 15px,
-        rgba(255, 240, 35, 0.1) 20px 20px, rgba(255, 240, 35, 0.05) 25px 25px;
       width: 12rem;
       height: 3rem;
       border-radius: 20em 40rem 20rem 40rem;
@@ -388,6 +395,9 @@ $basecolor: #ffffff;
     button:hover {
       background-color: rgb(255, 240, 35);
       color: #000;
+      box-shadow: rgba(255, 240, 35, 0.4) 5px 5px,
+        rgba(255, 240, 35, 0.3) 10px 10px, rgba(255, 240, 35, 0.2) 15px 15px,
+        rgba(255, 240, 35, 0.1) 20px 20px, rgba(255, 240, 35, 0.05) 25px 25px;
     }
   }
 
@@ -422,6 +432,13 @@ $basecolor: #ffffff;
 
       a {
         text-decoration: unset;
+        color: $basecolor-black;
+      }
+
+      a:hover {
+        cursor: -webkit-grab;
+        cursor: grab;
+        color: $basecolor;
       }
 
       li {

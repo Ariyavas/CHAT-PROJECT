@@ -6,7 +6,6 @@
 import { ref } from 'vue'
 import { RouterLink, RouterView } from "vue-router";
 
-
 export default {
   setup() {
     const leftDrawerOpen = ref(false)

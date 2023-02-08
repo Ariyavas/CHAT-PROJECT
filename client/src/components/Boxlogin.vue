@@ -29,14 +29,15 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            username: "",
-            password: "",
+            username: "Joh",
+            password: "1234",
         }
     },
     methods: {
         login() {
             var data = JSON.stringify({
-                "username": this.username
+                "username": this.username,
+                "password": this.password
             });
 
             var config = {
@@ -51,7 +52,9 @@ export default {
 
             axios(config)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
+                    console.log(JSON.stringify(response.data.data));
+                    localStorage.setItem('token', response.data.data.token)
+                    localStorage.setItem('userid', response.data.data.user._id)
                     router.push("/home")
                 })
                 .catch(function (error) {
