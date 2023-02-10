@@ -38,11 +38,40 @@ const showRoomUser = async () => {
   }
 };
 
+const showRoom = async (userid: string) => {
+  try {
+    const result: any = await Room.find({ created: userid });
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const updatestatusRoombyID = async (ID: string, status: boolean) => {
   try {
     const result: any = await Room.findById(ID);
 
     result.status = status;
+    await result.save();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updatestatusRoombyUser = async (userID: string, roomID: string) => {
+  try {
+    let room: any = await Room.find({ created: userID });
+    room = await room.map(async (e: any) => {
+      e.status = false;
+      await e.save();
+      return e;
+    });
+
+    const result: any = await Room.findById(roomID);
+    result.status = true;
     await result.save();
 
     return result;
@@ -97,4 +126,11 @@ const validateRoom = (room: any, user: any) => {
   return true;
 };
 
-export { createRoombyID, updatestatusRoombyID, joinRoombyID, showRoomUser };
+export {
+  createRoombyID,
+  updatestatusRoombyID,
+  joinRoombyID,
+  showRoomUser,
+  showRoom,
+  updatestatusRoombyUser,
+};

@@ -12,7 +12,7 @@ const messaging = async (roomID: string, userID: string, message: string) => {
     });
     dialog.save();
 
-    return "Successful";
+    return dialog;
   } catch (error: any) {
     console.log(error.message);
     return error.message;

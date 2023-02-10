@@ -10,8 +10,6 @@ const socketStart = (io: any) => {
       console.log(`Connected with socket_id : ${socket.id}`);
       const socket_data = socket.request._query;
 
-      console.log(socket_data.user_id);
-
       if (
         !socket_data ||
         !socket_data.user_id ||
@@ -23,65 +21,57 @@ const socketStart = (io: any) => {
       let roomid: string = "";
       let messagedetail: any;
       if (socket_data.room_id == undefined) {
+        // <== USER ==>
         const roomdata = await finddatafromDB(socket_data.user_id, "R");
-        // console.log(roomdata);
 
         if (roomdata != null && roomdata.status == true) {
+          // <-- USER HAS ROOM -->
           roomid = roomdata._id.toString();
-          // console.log(roomid);
 
-          // ++TEST ZONE++ //
           messagedetail = await MessageofRoom(roomid);
           await saveconnectedtimeDB(roomid, socket_data.user_id);
-          // console.log(await saveconnectedtimeDB(roomid, socket_data.user_id));
-          // --END TEST ZONE-- //
 
           socket.join(roomid);
           io.to(roomid).emit("room", roomdata);
           socket.emit("history", messagedetail);
         } else {
+          // <-- CREATE ROOM -->
           const room = await createRoombyID(socket_data.user_id, "none");
 
           roomid = room._id.toString();
 
-          // ++TEST ZONE++ //
           await saveconnectedtimeDB(roomid, socket_data.user_id);
-          // console.log(await saveconnectedtimeDB(roomid, socket_data.user_id));
-          // --END TEST ZONE-- //
 
           socket.join(roomid);
-          // console.log(room, room._id.toString());
 
           roomid = room._id.toString();
           io.to(roomid).emit("room", room);
         }
       } else {
+        // <== ADMIN ==>
         roomid = socket_data.room_id;
 
-        // ++TEST ZONE++ //
         messagedetail = await MessageofRoom(roomid);
         await saveconnectedtimeDB(roomid, socket_data.user_id);
-        // console.log(await saveconnectedtimeDB(roomid, socket_data.user_id));
-        // --END TEST ZONE-- //
 
         socket.join(roomid);
         const joinroom = await joinRoombyID(roomid, socket_data.user_id);
         io.to(roomid).emit("room", joinroom);
         socket.emit("history", messagedetail);
       }
-      // console.log(roomid);
 
       socket.on("room", function (text: any) {
         socket.emit("room", text);
       });
 
       socket.on("message", async function (text: any) {
+        if (text == undefined || text == null || text == "") {
+          return console.log(`not found message`);
+        }
         const infodialog = await messaging(roomid, socket_data.user_id, text);
 
         io.to(roomid).emit("message", {
-          sender: socket_data.user_id,
-          message: text,
-          status: infodialog,
+          infodialog,
         });
       });
 
@@ -93,24 +83,12 @@ const socketStart = (io: any) => {
           search = socket_data.user_id;
           finduserroombyiduser = await finddatafromDB(search, "R");
 
-          // ++TEST ZONE++ //
           await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
-          // console.log(
-          //   await savedisconnectDB(finduserroombyiduser, socket_data.user_id)
-          // );
-          // --END TEST ZONE-- //
         } else {
           finduserroombyiduser = await finddatafromDB(search, "RID");
 
-          // ++TEST ZONE++ //
           await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
-          // console.log(
-          //   await savedisconnectDB(finduserroombyiduser, socket_data.user_id)
-          // );
-          // --END TEST ZONE-- //
         }
-
-        // console.log(finduserroombyiduser);
 
         console.log(`Disconnected with socket_id : ${socket.id}`);
       });

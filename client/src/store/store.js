@@ -5,15 +5,20 @@ export const useDataStore = defineStore({
   state: () => ({
     data: false,
     datahistory: [],
+    roomID: false,
   }),
   actions: {
     setmessage(message) {
       this.data = message;
-      return true;
     },
     sethistory(history) {
       this.datahistory = history;
-      return true;
+    },
+    setroom(roomid) {
+      this.roomID = roomid;
+    },
+    addhistory(infomessage) {
+      this.datahistory.push(infomessage);
     },
   },
 });

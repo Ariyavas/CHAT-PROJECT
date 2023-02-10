@@ -22,7 +22,7 @@
     </div>
 </template>
 
-<script>
+<script lang="js">
 import router from '../router';
 import axios from 'axios';
 
@@ -55,6 +55,7 @@ export default {
                     console.log(JSON.stringify(response.data.data));
                     localStorage.setItem('token', response.data.data.token)
                     localStorage.setItem('userid', response.data.data.user._id)
+                    localStorage.setItem('role', response.data.data.user.role)
                     router.push("/home")
                 })
                 .catch(function (error) {

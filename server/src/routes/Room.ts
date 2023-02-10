@@ -4,6 +4,8 @@ import {
   updateRoom,
   joinRoom,
   showroom,
+  roomofuser,
+  updateRoomfromUser,
 } from "../controllers/Controller_Room";
 import { verifytoken } from "../middleware/validateJWTtoken";
 
@@ -13,5 +15,8 @@ router.get("/showuser", verifytoken, showroom);
 router.post("/create/:user_id", verifytoken, createRoom);
 router.put("/updatestatus/:room_id", verifytoken, updateRoom);
 router.put("/joinroom/:room_id", verifytoken, joinRoom);
+
+router.post("/roomhistory", roomofuser);
+router.post("/updatestatusbyuser", updateRoomfromUser);
 
 export = router;

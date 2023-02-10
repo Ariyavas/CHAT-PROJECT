@@ -13,7 +13,7 @@
     </div>
 </template>
 
-<script>
+<script lang="js">
 import router from '../router';
 
 export default {
