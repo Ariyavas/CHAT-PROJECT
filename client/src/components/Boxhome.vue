@@ -24,7 +24,14 @@ export default {
     },
     methods: {
         messagepage() {
-            router.push('/chat')
+            let role = localStorage.getItem('role')
+            console.log(role);
+            if (role == "Admin") {
+                router.push('/management')
+            }
+            else {
+                router.push('/chat')
+            }
         },
         signout() {
             localStorage.clear();

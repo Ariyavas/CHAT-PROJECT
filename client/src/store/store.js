@@ -19,6 +19,6 @@ export const useDataStore = defineStore({
     },
     addhistory(infomessage) {
       this.datahistory.push(infomessage);
-    },
+    }
   },
 });

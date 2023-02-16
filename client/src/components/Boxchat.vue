@@ -1,7 +1,7 @@
 <template>
     <div id="container">
         <aside>
-            <router-link class="close" to="/">X</router-link>
+            <router-link class="close" to="/home">X</router-link>
             <header>
                 <input type="text" placeholder="search">
             </header>
@@ -95,7 +95,10 @@ export default {
     },
     created() {
         serviceSocket.setupSocketConnection();
-        this.historyroomofUser();
+        setTimeout(() => {
+
+            this.historyroomofUser();
+        }, 700)
     },
     beforeUnmount() {
         serviceSocket.disconnect();

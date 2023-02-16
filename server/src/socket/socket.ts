@@ -1,11 +1,15 @@
-import { createRoombyID, joinRoombyID } from "../services/Service_Room";
+import {
+  createRoombyID,
+  joinRoombyID,
+  showRoomUser,
+} from "../services/Service_Room";
 import User from "../models/model_user";
 import Room from "../models/model_room";
 import { messaging } from "../middleware/messagesoket";
 import { MessageofRoom } from "../services/Service_Message";
 
 const socketStart = (io: any) => {
-  io.on("connection", async function (socket: any) {
+  io.on("connection", async (socket: any) => {
     try {
       console.log(`Connected with socket_id : ${socket.id}`);
       const socket_data = socket.request._query;
@@ -20,6 +24,7 @@ const socketStart = (io: any) => {
       }
       let roomid: string = "";
       let messagedetail: any;
+      let listdataroom: any;
       if (socket_data.room_id == undefined) {
         // <== USER ==>
         const roomdata = await finddatafromDB(socket_data.user_id, "R");
@@ -51,13 +56,20 @@ const socketStart = (io: any) => {
         // <== ADMIN ==>
         roomid = socket_data.room_id;
 
-        messagedetail = await MessageofRoom(roomid);
-        await saveconnectedtimeDB(roomid, socket_data.user_id);
+        listdataroom = await showRoomUser();
 
-        socket.join(roomid);
-        const joinroom = await joinRoombyID(roomid, socket_data.user_id);
-        io.to(roomid).emit("room", joinroom);
-        socket.emit("history", messagedetail);
+        if (roomid == undefined || roomid == "") {
+          socket.emit("room_active", listdataroom);
+        } else {
+          messagedetail = await MessageofRoom(roomid);
+          await saveconnectedtimeDB(roomid, socket_data.user_id);
+          const joinroom = await joinRoombyID(roomid, socket_data.user_id);
+
+          socket.join(roomid);
+          socket.emit("room_active", listdataroom);
+          socket.emit("history", messagedetail);
+          io.to(roomid).emit("room", joinroom);
+        }
       }
 
       socket.on("room", function (text: any) {
@@ -79,17 +91,20 @@ const socketStart = (io: any) => {
         let search: string = socket_data.room_id;
         let finduserroombyiduser: any;
 
-        if (search == undefined) {
-          search = socket_data.user_id;
-          finduserroombyiduser = await finddatafromDB(search, "R");
-
-          await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
+        if (search == undefined || search == "") {
+          return null;
         } else {
-          finduserroombyiduser = await finddatafromDB(search, "RID");
+          if (search == undefined) {
+            search = socket_data.user_id;
+            finduserroombyiduser = await finddatafromDB(search, "R");
 
-          await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
+            await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
+          } else {
+            finduserroombyiduser = await finddatafromDB(search, "RID");
+
+            await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
+          }
         }
-
         console.log(`Disconnected with socket_id : ${socket.id}`);
       });
     } catch (error: any) {
@@ -103,12 +118,16 @@ const finddatafromDB = async (search: any, column: string) => {
   try {
     let result: any;
 
+    if (search == "empty") {
+      return null;
+    }
+
     if (column == "U") {
       result = await User.findById(search);
     } else if (column == "R") {
       result = await Room.findOne({ created: search, status: true });
     } else if (column == "RID") {
-      result = await Room.findOne({ _id: search });
+      result = await Room.findById(search);
     }
 
     return result;
@@ -122,6 +141,10 @@ const savedisconnectDB = async (data: any, user_id: string) => {
   try {
     let result: any;
     result = data;
+
+    if (data == null) {
+      return null;
+    }
 
     result.user = result.user.map((data: any) => {
       if (user_id == data.id_user) {
