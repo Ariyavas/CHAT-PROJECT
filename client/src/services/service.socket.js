@@ -37,6 +37,8 @@ class SocketioService {
     });
     // <-- connect disconnect -->
     this.socket.on("disconnect", (data) => {
+      usedatafromstore.sethistory([]);
+      usedatafromstore.setroomlist([]);
       console.log("disconnect", data);
     });
   }

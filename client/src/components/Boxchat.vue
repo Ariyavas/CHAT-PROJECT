@@ -170,8 +170,8 @@ export default {
 
                     axios(config)
                         .then((response) => {
+                            serviceSocket.setupSocketConnection();
                             setTimeout(() => {
-                                serviceSocket.setupSocketConnection();
                                 this.datastore.setloading(false)
                             }, 2000);
                         })

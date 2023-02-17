@@ -3,7 +3,7 @@
     <div id="container">
         <div>
             <aside class="left">
-                <header>MESSAGEBOX</header>
+                <header>MESSAGEBOX <router-link to="/home"> BACK</router-link></header>
                 <div class="barhistory">
                     <ul>
                         <div v-for="list in datastore.viewactivechat">
@@ -14,7 +14,7 @@
                             </div>
                             <div v-else>
                                 <li @click="selectionRoom(list._id)">
-                                    <a>{{ list.topic }} - ID: {{ list._id }}</a><i class="glyphicon glyphicon-remove"></i>
+                                    <a>{{ list.topic }} - ID: {{ list._id }}</a><i @click="test" class="glyphicon glyphicon-remove"></i>
                                 </li>
                             </div>
                         </div>
@@ -140,6 +140,9 @@ export default {
                 this.activechat = true
             }
         },
+        test() {
+            console.log("Hi")
+        }
     }
 }
 </script>
