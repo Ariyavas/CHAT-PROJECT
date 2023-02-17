@@ -6,38 +6,51 @@
                 <header>MESSAGEBOX</header>
                 <div class="barhistory">
                     <ul>
-                        <li><a href="">TOPIC 0</a><i class="glyphicon glyphicon-remove"></i></li>
-                        <li><a href="">TOPIC 1</a><i class="glyphicon glyphicon-remove"></i></li>
-                        <li><a href="">TOPIC 2</a><i class="glyphicon glyphicon-remove"></i></li>
-                        <li><a href="">TOPIC 2</a><i class="glyphicon glyphicon-remove"></i></li>
-                        <li><a href="">TOPIC 2</a><i class="glyphicon glyphicon-remove"></i></li>
-                        <li><a href="">TOPIC 2</a><i class="glyphicon glyphicon-remove"></i></li>
-                        <li><a href="">TOPIC 2</a><i class="glyphicon glyphicon-remove"></i></li>
+                        <div v-for="list in datastore.viewactivechat">
+                            <div v-if="list._id == roomid">
+                                <li @click="selectionRoom(list._id)" class="active-chat">
+                                    <a>{{ list.topic }} - ID: {{ list._id }}</a><i class="glyphicon glyphicon-remove"></i>
+                                </li>
+                            </div>
+                            <div v-else>
+                                <li @click="selectionRoom(list._id)">
+                                    <a>{{ list.topic }} - ID: {{ list._id }}</a><i class="glyphicon glyphicon-remove"></i>
+                                </li>
+                            </div>
+                        </div>
                     </ul>
                 </div>
             </aside>
         </div>
         <div>
-            <main class="right">
+            <main class="right"
+                :style="{ visibility: activechat ? '' : 'hidden', transform: activechat ? '' : 'scale(0)' }">
                 <div class="chatbox-frame">
                     <div class="chatbox" id="app">
                         <div class="chatbox__header">
-                            <div class="chatbox__headerText">Robert Smith
+                            <div class="chatbox__headerText">
+                                USER
                                 <div class="chatbox__onlineDot"></div>
                             </div>
                             <div class="chatbox__button"></div>
                         </div>
-                        <div id="chat" class="chatbox__messages">
-                            <div class="chatbox__messageBox">
-                                <div class="chatbox__message">
-                                    Hi
-                                    <div class="chatbox__tooltip chatbox__tooltip--left">2.30</div>
+                        <div ref="chat" class="chatbox__messages">
+                            <div v-for="(item, index) in datastore.datahistory">
+                                <div v-if="item.sender != userid" class="chatbox__messageBox">
+                                    <div class="chatbox__message">
+                                        {{ item.message }}
+                                        <div class="chatbox__tooltip chatbox__tooltip--left">
+                                            {{ item.tiem_send }}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="chatbox__messageBox--primary">
-                                <div class="chatbox__message chatbox__message--primary">
-                                    Hi
-                                    <div class="chatbox__tooltip chatbox__tooltip--left">2.30</div>
+                                <div v-else class="chatbox__messageBox--primary">
+                                    <div class="chatbox__message chatbox__message--primary">
+                                        {{ item.message }}
+                                        <div class="chatbox__tooltip chatbox__tooltip--left">
+                                            {{ item.tiem_send }}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -57,7 +70,7 @@
 
 <script>
 import serviceSocket from '../services/service.socket';
-import { useDataStore } from '../store/store'
+import { useDataStore } from '../store/store';
 
 export default {
     setup() {
@@ -71,20 +84,60 @@ export default {
             history: [],
             newmessage: "",
             roomid: "",
+            activechat: false,
         }
     },
     created() {
-        serviceSocket.setupSocketConnectionForadmin(this.roomid);
+        this.datastore.setroom(this.roomid)
+        serviceSocket.setupSocketConnectionForadmin();
     },
     beforeUnmount() {
         serviceSocket.disconnect();
     },
+    watch: {
+        "datastore.datahistory": {
+            // This will let Vue know to look inside the array
+            deep: true,
+            // We have to move our method to a handler field
+            handler() {
+                this.checkscroll();
+            }
+        }
+    },
     methods: {
         sendmessage() {
-            console.log(this.newmessage);
             if (this.newmessage != undefined || this.newmessage != null || this.newmessage != "" || this.newmessage != "\n") {
                 serviceSocket.sendMessage(this.newmessage);
                 this.newmessage = ""
+            }
+        },
+        scrollBottom() {
+            setTimeout(() => {
+                var container = this.$refs.chat;
+                container.scrollTop = container.scrollHeight;
+            }, 200);
+        },
+        checkscroll() {
+            const progress = (this.$refs.chat.scrollTop / (this.$refs.chat.scrollHeight - this.$refs.chat.clientHeight)) * 100
+
+            if (progress >= 80) {
+                this.scrollBottom()
+            }
+        },
+        selectionRoom(room) {
+            if (room == this.roomid) {
+                console.log("YOU CONNECTED");
+                this.roomid = ""
+                this.datastore.sethistory([])
+                this.activechat = false
+                serviceSocket.disconnect();
+                return false
+            } else {
+                serviceSocket.disconnect();
+                this.roomid = room
+                this.datastore.setroom(this.roomid)
+                serviceSocket.setupSocketConnectionForadmin();
+                this.activechat = true
             }
         },
     }

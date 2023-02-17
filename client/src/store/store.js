@@ -6,6 +6,9 @@ export const useDataStore = defineStore({
     data: false,
     datahistory: [],
     roomID: false,
+    viewactivechat: [],
+    historyroom: [],
+    loading: false,
   }),
   actions: {
     setmessage(message) {
@@ -19,6 +22,15 @@ export const useDataStore = defineStore({
     },
     addhistory(infomessage) {
       this.datahistory.push(infomessage);
-    }
+    },
+    setactivelist(listuser) {
+      this.viewactivechat = listuser;
+    },
+    setroomlist(listuser) {
+      this.historyroom = listuser;
+    },
+    setloading(status) {
+      this.loading = status;
+    },
   },
 });

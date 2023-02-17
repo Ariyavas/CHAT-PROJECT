@@ -1,14 +1,21 @@
 <template>
-    <div id="container">
+    <div class="loader" v-if="datastore.loading">
+        <div class="lds-facebook">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div id="container" :style="{ display: datastore.loading ? 'none' : '' }">
         <aside>
             <router-link class="close" to="/home">X</router-link>
             <header>
                 <input type="text" placeholder="search">
             </header>
             <ul>
-                <div v-for="(item, index) in historyroom">
+                <div v-for="(item, index) in datastore.historyroom">
                     <li v-if="item._id == datastore.roomID._id">
-                        <a href="" @click="changTopic(item._id)">
+                        <a>
                             <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
                             <div>
                                 <h2>{{ item.topic }}</h2>
@@ -20,7 +27,7 @@
                         </a>
                     </li>
                     <li v-else>
-                        <a href="" @click="changTopic(item._id)">
+                        <a @click="changTopic(item._id)">
                             <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
                             <div>
                                 <h2>{{ item.topic }}</h2>
@@ -41,7 +48,7 @@
                     <h2>Admin</h2>
                 </div>
             </header>
-            <ul id="chat">
+            <ul id="chat" ref="chat">
                 <div v-for="(item, index) in datastore.datahistory">
                     <li v-if="item.sender == userid" class="me">
                         <div class="entete">
@@ -86,7 +93,6 @@ export default {
             newmessage: "",
             userid: localStorage.getItem('userid'),
             token: localStorage.getItem('token'),
-            historyroom: [],
         }
     },
     setup() {
@@ -95,10 +101,6 @@ export default {
     },
     created() {
         serviceSocket.setupSocketConnection();
-        setTimeout(() => {
-
-            this.historyroomofUser();
-        }, 700)
     },
     beforeUnmount() {
         serviceSocket.disconnect();
@@ -107,24 +109,34 @@ export default {
     },
     name: 'boxchat',
     watch: {
-        "serviceSocket.setupSocketConnection"(newtest2, oldtest2) {
-            console.log(newtest2, "old", oldtest2);
+        "datastore.datahistory": {
+            // This will let Vue know to look inside the array
+            deep: true,
+            // We have to move our method to a handler field
+            handler() {
+                this.checkscroll();
+            }
         }
     },
     methods: {
         sendmessage() {
-            //how to ignore \n in textarea
             if (this.newmessage != undefined || this.newmessage != null || this.newmessage != "" || this.newmessage != "\n") {
                 serviceSocket.sendMessage(this.newmessage);
                 this.newmessage = ""
-                setTimeout(() => {
-                    this.scrollBottom()
-                }, 500)
             }
         },
         scrollBottom() {
-            var container = this.$el.querySelector("#chat");
-            container.scrollTop = container.scrollHeight;
+            setTimeout(() => {
+                var container = this.$refs.chat;
+                container.scrollTop = container.scrollHeight;
+            }, 200);
+        },
+        checkscroll() {
+            const progress = (this.$refs.chat.scrollTop / (this.$refs.chat.scrollHeight - this.$refs.chat.clientHeight)) * 100
+
+            if (progress >= 80) {
+                this.scrollBottom()
+            }
         },
         ignoreNewLine(event) {
             // Get the value of the textarea. 
@@ -136,33 +148,10 @@ export default {
 
             this.sendmessage()
         },
-        historyroomofUser() {
-            var data = JSON.stringify({
-                "userid": this.userid
-            });
-
-            var config = {
-                method: 'post',
-                maxBodyLength: Infinity,
-                url: 'http://localhost:3000/room/roomhistory',
-                headers: {
-                    'Authorization': `Bearer ${this.token}`,
-                    'Content-Type': 'application/json'
-                },
-                data: data
-            };
-
-            axios(config)
-                .then((response) => {
-                    this.historyroom = response.data.data
-                    console.log(this.historyroom);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
         changTopic(room) {
-            this.historyroom.forEach(data => {
+            this.datastore.historyroom.forEach(data => {
+                serviceSocket.disconnect();
+                this.datastore.setloading(true)
                 if (data._id == room && room != this.datastore.roomID._id) {
                     var data = JSON.stringify({
                         "userid": this.userid,
@@ -181,14 +170,17 @@ export default {
 
                     axios(config)
                         .then((response) => {
-                            console.log(response);
+                            setTimeout(() => {
+                                serviceSocket.setupSocketConnection();
+                                this.datastore.setloading(false)
+                            }, 2000);
                         })
                         .catch((error) => {
                             console.log(error);
                         });
                 }
             });
-        }
+        },
     }
 }
 </script>

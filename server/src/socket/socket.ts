@@ -2,6 +2,7 @@ import {
   createRoombyID,
   joinRoombyID,
   showRoomUser,
+  showRoom,
 } from "../services/Service_Room";
 import User from "../models/model_user";
 import Room from "../models/model_room";
@@ -25,6 +26,7 @@ const socketStart = (io: any) => {
       let roomid: string = "";
       let messagedetail: any;
       let listdataroom: any;
+      let historyroom: any;
       if (socket_data.room_id == undefined) {
         // <== USER ==>
         const roomdata = await finddatafromDB(socket_data.user_id, "R");
@@ -35,8 +37,10 @@ const socketStart = (io: any) => {
 
           messagedetail = await MessageofRoom(roomid);
           await saveconnectedtimeDB(roomid, socket_data.user_id);
+          historyroom = await showRoom(socket_data.user_id);
 
           socket.join(roomid);
+          socket.emit("room_history", historyroom);
           io.to(roomid).emit("room", roomdata);
           socket.emit("history", messagedetail);
         } else {
@@ -46,9 +50,12 @@ const socketStart = (io: any) => {
           roomid = room._id.toString();
 
           await saveconnectedtimeDB(roomid, socket_data.user_id);
+          listdataroom = await showRoomUser();
+          historyroom = await showRoom(socket_data.user_id);
 
           socket.join(roomid);
-
+          socket.emit("room_history", historyroom);
+          io.emit("room_active", listdataroom);
           roomid = room._id.toString();
           io.to(roomid).emit("room", room);
         }
@@ -66,7 +73,7 @@ const socketStart = (io: any) => {
           const joinroom = await joinRoombyID(roomid, socket_data.user_id);
 
           socket.join(roomid);
-          socket.emit("room_active", listdataroom);
+          io.emit("room_active", listdataroom);
           socket.emit("history", messagedetail);
           io.to(roomid).emit("room", joinroom);
         }
