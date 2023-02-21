@@ -4,6 +4,7 @@ $basecolor-black: #000;
 $baseBackgound: #b163ff;
 $baseHistoryBox: #397cff;
 $baseChatBoxUser: #4dff0e;
+$baseQA: #ffdc2e;
 
 .login {
   min-height: 100vh;
@@ -385,9 +386,9 @@ $baseChatBoxUser: #4dff0e;
   .centerBox {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: end;
     text-align: center;
-    min-height: 80vh;
+    min-height: 15vh;
 
     button {
       width: 12rem;
@@ -404,7 +405,81 @@ $baseChatBoxUser: #4dff0e;
         rgba(255, 240, 35, 0.1) 20px 20px, rgba(255, 240, 35, 0.05) 25px 25px;
     }
   }
+  .FAQ-frame {
+    .title-FAQ {
+      display: flex;
+      justify-content: center;
+    }
 
+    .details-fram {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .contrainer-box {
+      width: 50%;
+    }
+
+    details {
+      border: $basecolor-black solid 1px;
+      border-radius: 15px;
+      width: 100%;
+      margin-bottom: 3%;
+      padding: 2%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+        rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+      cursor: cell;
+    }
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 120px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+    }
+    .close {
+      display: flex;
+      justify-content: end;
+      width: 100%;
+      color: #aaaaaa;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+    }
+
+    a {
+      margin: 10px;
+      padding: 1%;
+      font-size: 24px;
+      color: $basecolor-black;
+      text-decoration: unset;
+      border: $basecolor solid 2px;
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+        rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      display: flex;
+      cursor: pointer;
+    }
+  }
   nav {
     box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset,
       rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset,

@@ -9,7 +9,31 @@
         </ul>
     </nav>
     <div class="centerBox">
-        <button @click="messagepage">MESSAGE NOW</button>
+        <button ref="myBtn" @click="messagepage">MESSAGE NOW</button>
+    </div>
+    <div :style="{ display: modelstatus ? '' : 'block' }" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span @click="messagepage" class="close">&times;</span>
+            <div v-for="(item, index) in datatest">
+                <a @click="modelQA(item)">{{ item }}</a>
+            </div>
+        </div>
+    </div>
+    <div class="FAQ-frame">
+        <div>
+            <h1 class="title-FAQ">FAQ</h1>
+        </div>
+        <div class="details-fram">
+            <div class="contrainer-box">
+                <details v-for="(item, index) in datatest2">
+                    <summary>{{ item.q }}</summary>
+                    <div>
+                        {{ item.a }}
+                    </div>
+                </details>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -19,7 +43,10 @@ import router from '../router';
 export default {
     data() {
         return {
-            titlePage: "CHAT"
+            titlePage: "CHAT",
+            modelstatus: true,
+            datatest: ["data1", "data2", "data3"],
+            datatest2: [{ q: "How to ?", a: "do like this" }, { q: "How to ?", a: "do like this" }, { q: "How to ?", a: "do like this" }]
         }
     },
     methods: {
@@ -30,12 +57,19 @@ export default {
                 router.push('/management')
             }
             else {
-                router.push('/chat')
+                if (this.modelstatus) {
+                    this.modelstatus = false
+                } else {
+                    this.modelstatus = true
+                }
             }
         },
         signout() {
             localStorage.clear();
             router.push('/')
+        },
+        modelQA(question) {
+            // router.push('/chat')
         }
     }
 }
