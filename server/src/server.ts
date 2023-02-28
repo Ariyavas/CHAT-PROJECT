@@ -7,8 +7,9 @@ import * as socket from "socket.io";
 import cors from "cors";
 import User_rount from "./routes/user";
 import Room_rount from "./routes/Room";
-import SocketStart from "./socket/socket";
 import Message_rount from "./routes/message";
+import QuestionAnswer_rount from "./routes/Qa";
+import SocketStart from "./socket/socket";
 
 const app = express();
 const server = http.createServer(app);
@@ -65,6 +66,7 @@ const StartServer = () => {
   app.use("/user", User_rount);
   app.use("/room", Room_rount);
   app.use("/dialog", Message_rount);
+  app.use("/qa", QuestionAnswer_rount);
 
   let io = new socket.Server(server, {
     cors: {

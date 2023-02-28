@@ -3,6 +3,7 @@ import Loginpage from "../views/Login.vue";
 import Chat from "../views/Chat.vue";
 import Home from "../views/Home.vue";
 import Chatadmib from "../views/ChatAdmin.vue";
+import QA from "../views/QaAdmin.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,6 +27,11 @@ const router = createRouter({
       path: "/management",
       name: "chatAdmin",
       component: Chatadmib,
+    },
+    {
+      path: "/qamanagement",
+      name: "QA",
+      component: QA,
     },
   ],
 });

@@ -101,6 +101,12 @@ export default {
     },
     created() {
         serviceSocket.setupSocketConnection();
+        if (this.datastore.qamessage != false) {
+            this.newmessage = this.datastore.qamessage
+            setTimeout(() => {
+                this.sendmessage()
+            }, 1000);
+        }
     },
     beforeUnmount() {
         serviceSocket.disconnect();

@@ -22,7 +22,7 @@
     </div>
     <div class="FAQ-frame">
         <div>
-            <h1 class="title-FAQ">FAQ</h1>
+            <h1 class="title-FAQ">FAQs</h1>
         </div>
         <div class="details-fram">
             <div class="contrainer-box">
@@ -39,13 +39,18 @@
 
 <script lang="js">
 import router from '../router';
+import { useDataStore } from '../store/store'
 
 export default {
+    setup() {
+        const datastore = useDataStore()
+        return { datastore }
+    },
     data() {
         return {
             titlePage: "CHAT",
             modelstatus: true,
-            datatest: ["data1", "data2", "data3"],
+            datatest: ["data1", "data2", "data3", "other"],
             datatest2: [{ q: "How to ?", a: "do like this" }, { q: "How to ?", a: "do like this" }, { q: "How to ?", a: "do like this" }]
         }
     },
@@ -69,7 +74,8 @@ export default {
             router.push('/')
         },
         modelQA(question) {
-            // router.push('/chat')
+            this.datastore.setQA(question)
+            router.push('/chat')
         }
     }
 }

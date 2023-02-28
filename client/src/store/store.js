@@ -9,6 +9,7 @@ export const useDataStore = defineStore({
     viewactivechat: [],
     historyroom: [],
     loading: false,
+    qamessage: false,
   }),
   actions: {
     setmessage(message) {
@@ -31,6 +32,9 @@ export const useDataStore = defineStore({
     },
     setloading(status) {
       this.loading = status;
+    },
+    setQA(message) {
+      this.qamessage = message;
     },
   },
 });
