@@ -1,5 +1,5 @@
 <template>
-    <main class="">
+    <main class="qamanagement">
         <QAadmin />
     </main>
 </template>

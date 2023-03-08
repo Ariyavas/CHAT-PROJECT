@@ -3,11 +3,18 @@ import {
   joinRoombyID,
   showRoomUser,
   showRoom,
+  updatestatusRoombyID,
 } from "../services/Service_Room";
+import { MessageofRoom } from "../services/Service_Message";
+import { RESAIFAQS } from "../services/Service_AI";
+
 import User from "../models/model_user";
 import Room from "../models/model_room";
+
 import { messaging } from "../middleware/messagesoket";
-import { MessageofRoom } from "../services/Service_Message";
+import { searchgroup } from "../services/Service_Qa";
+
+import mongoose from "mongoose";
 
 const socketStart = (io: any) => {
   io.on("connection", async (socket: any) => {
@@ -91,6 +98,40 @@ const socketStart = (io: any) => {
 
         io.to(roomid).emit("message", {
           infodialog,
+        });
+      });
+
+      socket.on("group-faqs", async function (text: any) {
+        if (text == undefined || text == null || text == "") {
+          return console.log(`not found group`);
+        }
+        const groupqa = await searchgroup(text);
+
+        io.to(roomid).emit("group-faqs", {
+          groupqa,
+        });
+      });
+
+      socket.on("aks-bot", async function (text: any) {
+        if (text == undefined || text == null || text == "") {
+          return console.log(`not found group`);
+        }
+        const botid: string = "63dcb9fc398eabe2233e181c";
+
+        const infodialog = await messaging(roomid, botid, text);
+
+        io.to(roomid).emit("message", { infodialog });
+      });
+
+      socket.on("success_faqs", async function (roomid: any) {
+        if (roomid == undefined) {
+          console.log(roomid);
+          return null;
+        }
+        const infostatus = await updatestatusRoombyID(roomid, false);
+
+        socket.to(roomid).emit("success_faqs", {
+          infostatus,
         });
       });
 

@@ -6,79 +6,92 @@
             <div></div>
         </div>
     </div>
-    <div id="container" :style="{ display: datastore.loading ? 'none' : '' }">
-        <aside>
-            <router-link class="close" to="/home">X</router-link>
-            <header>
-                <input type="text" placeholder="search">
-            </header>
-            <ul>
-                <div v-for="(item, index) in datastore.historyroom">
-                    <li v-if="item._id == datastore.roomID._id">
-                        <a>
-                            <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
-                            <div>
-                                <h2>{{ item.topic }}</h2>
-                                <h3>
-                                    <span class="status green"></span>
-                                    ACTIVE NOW
-                                </h3>
+    <div :style="{ display: qascreen ? '' : 'none' }">
+        <div id="container" :style="{ display: datastore.loading ? 'none' : '' }">
+            <aside>
+                <router-link class="close" to="/home">X</router-link>
+                <header>
+                    <input type="text" placeholder="search">
+                </header>
+                <ul>
+                    <div v-for="(item, index) in datastore.historyroom">
+                        <li v-if="item._id == datastore.roomID._id">
+                            <a>
+                                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
+                                <div>
+                                    <h2>{{ item.topic }}</h2>
+                                    <h3>
+                                        <span class="status green"></span>
+                                        ACTIVE NOW
+                                    </h3>
+                                </div>
+                            </a>
+                        </li>
+                        <li v-else>
+                            <a @click="changTopic(item._id)">
+                                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
+                                <div>
+                                    <h2>{{ item.topic }}</h2>
+                                    <h3>
+                                        <span class="status orange"></span>
+                                        OTHER TOPIC
+                                    </h3>
+                                </div>
+                            </a>
+                        </li>
+                    </div>
+                </ul>
+            </aside>
+            <main>
+                <header>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
+                    <div>
+                        <h2>Admin</h2>
+                        <span @click="option">QA</span>
+                    </div>
+                </header>
+                <ul id="chat" ref="chat">
+                    <div v-for="(item, index) in datastore.datahistory">
+                        <li v-if="item.sender == userid" class="me">
+                            <div class="entete">
+                                <span class="status blue"></span>
+                                <h2>ME</h2>&nbsp;
+                                <h3>{{ item.time_send }}</h3>
                             </div>
-                        </a>
-                    </li>
-                    <li v-else>
-                        <a @click="changTopic(item._id)">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
-                            <div>
-                                <h2>{{ item.topic }}</h2>
-                                <h3>
-                                    <span class="status orange"></span>
-                                    OTHER TOPIC
-                                </h3>
+                            <div class="triangle"></div>
+                            <div class="message">
+                                {{ item.message }}
                             </div>
-                        </a>
-                    </li>
-                </div>
-            </ul>
-        </aside>
-        <main>
-            <header>
-                <img src="https://cdn-icons-png.flaticon.com/512/2038/2038955.png" alt="">
-                <div>
-                    <h2>Admin</h2>
-                </div>
-            </header>
-            <ul id="chat" ref="chat">
-                <div v-for="(item, index) in datastore.datahistory">
-                    <li v-if="item.sender == userid" class="me">
-                        <div class="entete">
-                            <span class="status blue"></span>
-                            <h2>ME</h2>&nbsp;
-                            <h3>{{ item.time_send }}</h3>
-                        </div>
-                        <div class="triangle"></div>
-                        <div class="message">
-                            {{ item.message }}
-                        </div>
-                    </li>
-                    <li v-else class="you">
-                        <div class="entete">
-                            <h3>{{ item.time_send }}</h3>&nbsp;
-                            <h2>ADMIN</h2>
-                            <span class="status green"></span>
-                        </div>
-                        <div class="triangle"></div>
-                        <div class="message">
-                            {{ item.message }}
-                        </div>
-                    </li>
-                </div>
-            </ul>
-            <footer>
-                <textarea v-model="newmessage" @keyup.enter="ignoreNewLine" placeholder="message..."></textarea>
-                <a @click="sendmessage" style="float: right;">SEND</a>
-            </footer>
-        </main>
+                        </li>
+                        <li v-else class="you">
+                            <div class="entete">
+                                <h3>{{ item.time_send }}</h3>&nbsp;
+                                <h2>ADMIN</h2>
+                                <span class="status green"></span>
+                            </div>
+                            <div class="triangle"></div>
+                            <div class="message">
+                                {{ item.message }}
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+                <footer>
+                    <textarea v-model="newmessage" @keyup.enter="ignoreNewLine" placeholder="message..."></textarea>
+                    <a @click="sendmessage" style="float: right;">SEND</a>
+                </footer>
+            </main>
+        </div>
+    </div>
+    <div class="group-faq" :style="{ display: qascreen ? 'none' : '' }">
+        <h1 @click="option">BACK</h1>
+        <ul>
+            <li v-for="(item, index) in datastore.groupfaqs.groupqa">
+                <a @click="snedmessagetoBOT(item.Q, item.A)">
+                    {{ item.Q }}
+                </a>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -93,6 +106,7 @@ export default {
             newmessage: "",
             userid: localStorage.getItem('userid'),
             token: localStorage.getItem('token'),
+            qascreen: true,
         }
     },
     setup() {
@@ -104,7 +118,9 @@ export default {
         if (this.datastore.qamessage != false) {
             this.newmessage = this.datastore.qamessage
             setTimeout(() => {
+                serviceSocket.sendGroupFaqs(this.datastore.qamessage);
                 this.sendmessage()
+                this.scrollBottom();
             }, 1000);
         }
     },
@@ -127,7 +143,14 @@ export default {
     methods: {
         sendmessage() {
             if (this.newmessage != undefined || this.newmessage != null || this.newmessage != "" || this.newmessage != "\n") {
+                console.log(this.newmessage);
                 serviceSocket.sendMessage(this.newmessage);
+                const check = this.filtermessage()
+                if (check) {
+                    setTimeout(() => {
+                        serviceSocket.sendMessageToBot(check)
+                    }, 1000);
+                }
                 this.newmessage = ""
             }
         },
@@ -187,6 +210,34 @@ export default {
                 }
             });
         },
+        option() {
+            if (this.qascreen) {
+                this.qascreen = false
+            } else {
+                this.qascreen = true
+            }
+        },
+        snedmessagetoBOT(q, a) {
+            this.qascreen = true
+            this.newmessage = q
+            serviceSocket.sendMessage(this.newmessage);
+            setTimeout(() => {
+                serviceSocket.sendMessageToBot(a)
+            }, 1000);
+            this.newmessage = ""
+        },
+        filtermessage() {
+            if (this.datastore.groupfaqs.length != 0) {
+                for (const item of this.datastore.groupfaqs.groupqa) {
+                    if (this.newmessage == item.Q) {
+                        return item.A
+                    }
+                    else if (this.newmessage != this.datastore.qamessage) {
+                        return "IDK u asking about question ?"
+                    }
+                }
+            }
+        }
     }
 }
 </script>

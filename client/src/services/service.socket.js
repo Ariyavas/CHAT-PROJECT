@@ -32,8 +32,13 @@ class SocketioService {
     this.socket.on("room_active", (data) => {
       usedatafromstore.setactivelist(data);
     });
+    //<-- connect room_history -->
     this.socket.on("room_history", (data) => {
       usedatafromstore.setroomlist(data);
+    });
+    //<-- connect group-faqs -->
+    this.socket.on("group-faqs", (data) => {
+      usedatafromstore.setGroupFaqs(data);
     });
     // <-- connect disconnect -->
     this.socket.on("disconnect", (data) => {
@@ -83,7 +88,24 @@ class SocketioService {
     }
   }
 
-  updatehistory() {}
+  sendMessageToBot(message) {
+    if (this.socket) {
+      this.socket.emit("aks-bot", message);
+      console.log(message);
+    }
+  }
+
+  sendGroupFaqs(group) {
+    if (this.socket) {
+      this.socket.emit("group-faqs", group);
+    }
+  }
+
+  closeTap(roomid) {
+    if (this.socket) {
+      this.socket.emit("success_faqs", roomid);
+    }
+  }
 
   disconnect() {
     if (this.socket) {

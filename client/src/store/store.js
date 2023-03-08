@@ -10,6 +10,7 @@ export const useDataStore = defineStore({
     historyroom: [],
     loading: false,
     qamessage: false,
+    groupfaqs: [],
   }),
   actions: {
     setmessage(message) {
@@ -35,6 +36,12 @@ export const useDataStore = defineStore({
     },
     setQA(message) {
       this.qamessage = message;
+    },
+    removeactivechat(index) {
+      this.viewactivechat.splice(index, 1);
+    },
+    setGroupFaqs(group) {
+      this.groupfaqs = group;
     },
   },
 });

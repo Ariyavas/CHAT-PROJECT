@@ -3,13 +3,16 @@ import mongoose from "mongoose";
 import http from "http";
 import { config } from "./config/config";
 import Logging from "./library/logging";
+//SoCket
 import * as socket from "socket.io";
 import cors from "cors";
+import SocketStart from "./socket/socket";
+//Routes_API
 import User_rount from "./routes/user";
 import Room_rount from "./routes/Room";
 import Message_rount from "./routes/message";
 import QuestionAnswer_rount from "./routes/Qa";
-import SocketStart from "./socket/socket";
+import AI_rount from "./routes/AI";
 
 const app = express();
 const server = http.createServer(app);
@@ -67,6 +70,7 @@ const StartServer = () => {
   app.use("/room", Room_rount);
   app.use("/dialog", Message_rount);
   app.use("/qa", QuestionAnswer_rount);
+  app.use("/api", AI_rount);
 
   let io = new socket.Server(server, {
     cors: {

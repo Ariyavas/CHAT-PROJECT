@@ -7,7 +7,7 @@ const AnswerSchema: Schema = new Schema(
   {
     id_question: { type: String, required: true },
     message: { type: String, required: true },
-    create_time: { type: String, required: true },
+    create_time: { type: Date, required: true },
     status: { type: Boolean, require: true },
   },
   {

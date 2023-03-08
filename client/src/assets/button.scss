@@ -1,0 +1,52 @@
+.btn-border-animation {
+  background: #444;
+  animation: corner 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+
+  $s: 100% / 8;
+  $t: 0.001%;
+
+  @keyframes corner {
+    #{$s * 0} {
+      border-top-left-radius: 5% 15%;
+    }
+    #{$s * 1} {
+      border-top-left-radius: 15%;
+      border-top-right-radius: 15%;
+    }
+    #{$s * 2} {
+      border-top-right-radius: 5% 15%;
+    }
+    #{$s * 2 + $t} {
+      border-top-right-radius: 15% 5%;
+    }
+    #{$s * 3} {
+      border-top-right-radius: 15%;
+      border-bottom-right-radius: 15%;
+    }
+    #{$s * 4} {
+      border-bottom-right-radius: 15% 5%;
+    }
+    #{$s * 4 + $t} {
+      border-bottom-right-radius: 5% 15%;
+    }
+    #{$s * 5} {
+      border-bottom-right-radius: 15%;
+      border-bottom-left-radius: 15%;
+    }
+    #{$s * 6} {
+      border-bottom-left-radius: 5% 15%;
+    }
+    #{$s * 6 + $t} {
+      border-bottom-left-radius: 15% 5%;
+    }
+    #{$s * 7} {
+      border-bottom-left-radius: 15%;
+      border-top-left-radius: 15%;
+    }
+    #{$s * 8} {
+      border-top-left-radius: 15% 5%;
+    }
+  }
+}
