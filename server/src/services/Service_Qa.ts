@@ -36,6 +36,16 @@ const showQuestion = async () => {
   }
 };
 
+const sentQuestion = async () => {
+  try {
+    const qa = QA.aggregate([{ $project: { _id: 0, message: 1, group: 1 } }]);
+
+    return qa;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const createAnswer = async (answer: string, questionid: string) => {
   try {
     const ans = new Answer({
@@ -185,6 +195,97 @@ const searchgroup = async (message: string) => {
   return datatest;
 };
 
+const searchkeyword = async (message: string) => {
+  const qa: any = await QA.aggregate([{ $project: { message: 1, _id: 1 } }]);
+
+  let data: any = [];
+  for (const item of qa) {
+    data.push(item.message);
+  }
+
+  let result = [];
+
+  let keywordmacth = [];
+
+  for (const item of data) {
+    result.push(item.split(" "));
+  }
+
+  const afterinput = message.split(" ");
+
+  // for (const datain of afterinput) {
+  //   for (const i of result) {
+  //     for (const k of i) {
+  //       if (datain == k) {
+  //         keywordmacth.push(i);
+  //         console.log("MACTH", k);
+  //       }
+  //     }
+  //   }
+  // }
+
+  for (let i = 0; i < afterinput.length; i++) {
+    for (let k = 0; k < result.length; k++) {
+      for (let j = 0; j < result[k].length; j++) {
+        if (
+          afterinput[i].toUpperCase() == result[k][j].toUpperCase() &&
+          afterinput[0].toUpperCase() == result[k][0].toUpperCase()
+        ) {
+          keywordmacth.push(result[k]);
+          // console.log("MACTH", result[k][j]);
+        }
+      }
+    }
+  }
+
+  let sentence = [];
+
+  for (const item of keywordmacth) {
+    sentence.push(item.join(" "));
+  }
+
+  const calculate = sentence.reduce(function (r: any, a: any) {
+    r[a] = r[a] || [];
+    r[a].push(a);
+    return r;
+  }, {});
+
+  const summary = Object.keys(calculate).map((item) => {
+    return {
+      word: item,
+      count: calculate[item].length,
+      persen: ((calculate[item].length * 100) / sentence.length).toFixed(2),
+    };
+  });
+
+  // console.log(summary.sort((a: any, b: any) => b.count - a.count));
+
+  const questionexpected: any = summary.sort(
+    (a: any, b: any) => b.count - a.count
+  )[0];
+
+  let answerofquestion: any;
+
+  if (questionexpected === undefined) {
+    return false;
+  }
+  const num = sentence.length * 0.4;
+
+  if (num > questionexpected.count) {
+    return false;
+  }
+
+  for (const item of qa) {
+    if (item.message == questionexpected.word) {
+      answerofquestion = item;
+    }
+  }
+
+  const ans = await Answer.findOne({ id_question: answerofquestion._id });
+
+  return ans;
+};
+
 export {
   createQuestion,
   showQuestion,
@@ -195,4 +296,6 @@ export {
   showQuestionAndAnswer,
   deleteQA,
   searchgroup,
+  searchkeyword,
+  sentQuestion,
 };

@@ -4,6 +4,7 @@ import {
   showRoomUser,
   showRoom,
   updatestatusRoombyID,
+  updatestatusactiveRoombyID,
 } from "../services/Service_Room";
 import { MessageofRoom } from "../services/Service_Message";
 import { RESAIFAQS } from "../services/Service_AI";
@@ -12,9 +13,11 @@ import User from "../models/model_user";
 import Room from "../models/model_room";
 
 import { messaging } from "../middleware/messagesoket";
-import { searchgroup } from "../services/Service_Qa";
-
-import mongoose from "mongoose";
+import {
+  searchgroup,
+  searchkeyword,
+  sentQuestion,
+} from "../services/Service_Qa";
 
 const socketStart = (io: any) => {
   io.on("connection", async (socket: any) => {
@@ -34,6 +37,7 @@ const socketStart = (io: any) => {
       let messagedetail: any;
       let listdataroom: any;
       let historyroom: any;
+      const groupfaqs = await sentQuestion();
       if (socket_data.room_id == undefined) {
         // <== USER ==>
         const roomdata = await finddatafromDB(socket_data.user_id, "R");
@@ -49,6 +53,7 @@ const socketStart = (io: any) => {
           socket.join(roomid);
           socket.emit("room_history", historyroom);
           io.to(roomid).emit("room", roomdata);
+          socket.emit("group-faqs", groupfaqs);
           socket.emit("history", messagedetail);
         } else {
           // <-- CREATE ROOM -->
@@ -57,12 +62,11 @@ const socketStart = (io: any) => {
           roomid = room._id.toString();
 
           await saveconnectedtimeDB(roomid, socket_data.user_id);
-          listdataroom = await showRoomUser();
           historyroom = await showRoom(socket_data.user_id);
 
           socket.join(roomid);
           socket.emit("room_history", historyroom);
-          io.emit("room_active", listdataroom);
+          socket.emit("group-faqs", groupfaqs);
           roomid = room._id.toString();
           io.to(roomid).emit("room", room);
         }
@@ -116,10 +120,30 @@ const socketStart = (io: any) => {
         if (text == undefined || text == null || text == "") {
           return console.log(`not found group`);
         }
+        const infodialog = await messaging(roomid, socket_data.user_id, text);
+
+        const key: any = await searchkeyword(text);
         const botid: string = "63dcb9fc398eabe2233e181c";
+        if (key != false) {
+          const infodialog = await messaging(roomid, botid, key.message);
+          setTimeout(() => {
+            io.to(roomid).emit("message", { infodialog });
+          }, 500);
+        } else {
+          const message: any = await RESAIFAQS(text);
+          const alertword: string =
+            "I don't understand the question please wait for the experts coming in.";
+          if (message == alertword) {
+            await updatestatusactiveRoombyID(roomid, true);
 
-        const infodialog = await messaging(roomid, botid, text);
-
+            listdataroom = await showRoomUser();
+            io.emit("room_active", listdataroom);
+          }
+          const infodialog = await messaging(roomid, botid, message);
+          setTimeout(() => {
+            io.to(roomid).emit("message", { infodialog });
+          }, 500);
+        }
         io.to(roomid).emit("message", { infodialog });
       });
 

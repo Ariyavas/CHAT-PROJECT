@@ -40,7 +40,10 @@
         </div>
         <div>
             <label for="group">Group</label>
-            <input v-model="group" type="text" id="group" name="group" placeholder="Group...">
+            <input v-model="group" type="text" id="group" list="grouplist" name="group" placeholder="Group...">
+            <datalist id="grouplist">
+                <option v-for="(item, index) in groupfaq">{{ item.group }}</option>
+            </datalist>
         </div>
         <input @click="useAPIsaveData" type="submit">
     </div>
@@ -58,11 +61,30 @@ export default {
             answerdata: [],
             answermassage: "",
             group: "",
+            groupfaq: [],
         }
     },
     setup() {
         const datastore = useDataStore()
         return { datastore }
+    },
+    beforeCreate() {
+        var config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:3000/qa/showquestion',
+            headers: {},
+            data: ""
+        };
+
+        axios(config)
+            .then((response) => {
+                this.groupfaq = response.data.data
+                this.groupfaq = [...new Map(this.groupfaq.map(item => [item['group'], item])).values()]
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     },
     methods: {
         pushDatain() {
@@ -92,7 +114,7 @@ export default {
             var data = JSON.stringify({
                 "questionmassage": this.questionmassge,
                 "answermassage": this.answerdata,
-                "group": this.group,
+                "group": this.group.toUpperCase(),
                 "number": 1
             });
 

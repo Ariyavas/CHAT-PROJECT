@@ -17,6 +17,7 @@ const RoomSchema: Schema = new Schema(
     topic: { type: String, required: true },
     created: { type: String, required: true },
     creat_time: { type: Date, required: true },
+    status_active: { type: Boolean, required: true },
     status: { type: Boolean, required: true },
   },
   {

@@ -1,9 +1,9 @@
 <template>
-    <main class="messagebutton">
-        <Boxhome />
+    <main class="homepage">
+        <home />
     </main>
 </template>
 
 <script setup>
-import Boxhome from '../components/Boxhome.vue'
+import home from '../components/BoxhomeV2.vue'
 </script>

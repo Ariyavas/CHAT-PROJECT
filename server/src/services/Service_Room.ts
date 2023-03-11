@@ -18,6 +18,7 @@ const createRoombyID = async (ID: string, topic: string) => {
       topic: topic,
       created: ID,
       creat_time: new Date(),
+      status_active: false,
       status: true,
     });
     await room.save();
@@ -30,7 +31,7 @@ const createRoombyID = async (ID: string, topic: string) => {
 
 const showRoomUser = async () => {
   try {
-    const result: any = await Room.find({ status: true });
+    const result: any = await Room.find({ status_active: true });
 
     return result;
   } catch (error) {
@@ -48,11 +49,25 @@ const showRoom = async (userid: string) => {
   }
 };
 
+const updatestatusactiveRoombyID = async (ID: string, status: boolean) => {
+  try {
+    const result: any = await Room.findById(ID);
+
+    result.status_active = status;
+    await result.save();
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const updatestatusRoombyID = async (ID: string, status: boolean) => {
   try {
     const result: any = await Room.findById(ID);
 
     result.status = status;
+    result.status_active = status;
     await result.save();
 
     return result;
@@ -133,4 +148,5 @@ export {
   showRoomUser,
   showRoom,
   updatestatusRoombyUser,
+  updatestatusactiveRoombyID,
 };

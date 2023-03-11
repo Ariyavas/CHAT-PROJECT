@@ -8,6 +8,7 @@ import {
   updateAnswer,
   showQuestionAndAnswer,
   deleteQA,
+  searchkeyword,
 } from "../services/Service_Qa";
 
 const Questionrequest = async (
@@ -106,6 +107,17 @@ const deleteDATAFAQs = async (
       res.status(500).json({ err: err.message });
     });
 };
+
+const keyword = async (req: Request, res: Response, next: NextFunction) => {
+  const { message } = req.body
+  searchkeyword(message)
+    .then((data: any) => {
+      res.status(200).json({ data: data });
+    })
+    .catch((err: any) => {
+      res.status(500).json({ err: err.message });
+    });
+};
 export {
   Questionrequest,
   ShowFAQs,
@@ -115,4 +127,5 @@ export {
   updateAns,
   ShowQA,
   deleteDATAFAQs,
+  keyword,
 };

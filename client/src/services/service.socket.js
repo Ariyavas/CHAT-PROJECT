@@ -91,7 +91,6 @@ class SocketioService {
   sendMessageToBot(message) {
     if (this.socket) {
       this.socket.emit("aks-bot", message);
-      console.log(message);
     }
   }
 

@@ -11,5 +11,6 @@ export interface IRoom {
   topic: string;
   created: string;
   create_time: Date;
+  status_active: boolean;
   status: boolean;
 }

@@ -36,7 +36,7 @@ const generatePrompt = async (message: string) => {
     text += `\n\nQ:${item.Q}\nA:${item.A}`;
   });
 
-  return `I am a highly intelligent question answering bot. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with "Unknown".${text}\n\nQ: ${capitalizedAnimal}\nA:`;
+  return `I am a highly intelligent question answering bot. But my knowledge will only be within the framework of nakamoto. If you ask me a question that is rooted in truth, I will give you the answer. If you ask me a question that is nonsense, trickery, or has no clear answer, I will respond with "I don't understand the question please wait for the experts coming in.".${text}\n\nQ: ${capitalizedAnimal}\nA:`;
 };
 
 export { RESAIFAQS };
