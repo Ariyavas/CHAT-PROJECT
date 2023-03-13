@@ -25,9 +25,6 @@ $basecolor-yellow: #ffff00;
       border-top-right-radius: 10px;
       justify-content: space-between;
       align-items: center;
-      h2 {
-        animation: lightRGB 1s infinite;
-      }
     }
 
     /* Chatbox Messages */
@@ -128,9 +125,6 @@ $basecolor-yellow: #ffff00;
       border-top-right-radius: 10px;
       justify-content: space-between;
       align-items: center;
-      h2 {
-        animation: lightRGB 1s infinite;
-      }
     }
     .top-content {
       height: 75%;
@@ -140,7 +134,7 @@ $basecolor-yellow: #ffff00;
       .top-content-box {
         display: flex;
         font-size: 20px;
-        height: 36px;
+        height: auto;
         border-bottom: $basecolor-black solid 1px;
         align-items: center;
         padding: 10px;
@@ -219,9 +213,6 @@ $basecolor-yellow: #ffff00;
       border-top-right-radius: 10px;
       justify-content: space-between;
       align-items: center;
-      h2 {
-        animation: lightRGB 1s infinite;
-      }
 
       .search {
         height: 20px;

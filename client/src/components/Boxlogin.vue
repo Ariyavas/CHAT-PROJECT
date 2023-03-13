@@ -51,14 +51,20 @@ export default {
             };
 
             axios(config)
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data.data));
+                .then((response) => {
                     localStorage.setItem('token', response.data.data.token)
                     localStorage.setItem('userid', response.data.data.user._id)
                     localStorage.setItem('role', response.data.data.user.role)
+                    this.$toast.success(`SUCCESS`, {
+                        position: "top"
+                    });
                     router.push("/home")
                 })
-                .catch(function (error) {
+                .catch((error) => {
+                    this.$toast.error(`INVALID USER ID OR PASSWORD`,{
+                        type: "error",
+                        position: "top"
+                    });
                     console.log(error.message);
                 });
         }

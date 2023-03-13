@@ -9,14 +9,21 @@
                         <div v-for="(list, index) in datastore.viewactivechat">
                             <div v-if="list._id == roomid">
                                 <li @click="selectionRoom(list._id)" class="active-chat">
-                                    <a>{{ list.topic }} - ID: {{ list._id }}</a><i @click="close(list._id, index)"
+                                    <a>ID: {{ list._id }}</a><i @click="close(list._id, index)"
                                         class="glyphicon glyphicon-remove"></i>
                                 </li>
                             </div>
                             <div v-else>
-                                <li @click="selectionRoom(list._id)">
-                                    <a>{{ list.topic }} - ID: {{ list._id }}</a><i class="glyphicon glyphicon-remove"></i>
-                                </li>
+                                <div v-if="list.user.length > 1">
+                                    <li @click="selectionRoom(list._id)" style="background-color: red;">
+                                        <a>{{ list.topic }}</a><i class="glyphicon glyphicon-remove"></i>
+                                    </li>
+                                </div>
+                                <div v-else>
+                                    <li @click="selectionRoom(list._id)">
+                                        <a>{{ list.topic }}</a><i class="glyphicon glyphicon-remove"></i>
+                                    </li>
+                                </div>
                             </div>
                         </div>
                     </ul>
@@ -131,7 +138,9 @@ export default {
                 this.roomid = ""
                 this.datastore.sethistory([])
                 this.activechat = false
+                this.datastore.setroom(this.roomid)
                 serviceSocket.disconnect();
+                serviceSocket.setupSocketConnectionForadmin();
                 return false
             } else {
                 serviceSocket.disconnect();

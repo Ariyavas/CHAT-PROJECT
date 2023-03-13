@@ -1,4 +1,5 @@
 <template>
+    <iframe src="https://www.nakamoto.games/" style="display: ;"></iframe>
     <main class="homepage">
         <home />
     </main>

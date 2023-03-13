@@ -6,6 +6,7 @@ import {
   showroom,
   roomofuser,
   updateRoomfromUser,
+  setAdminactiveinroom,
 } from "../controllers/Controller_Room";
 import { verifytoken } from "../middleware/validateJWTtoken";
 
@@ -18,5 +19,7 @@ router.put("/joinroom/:room_id", verifytoken, joinRoom);
 
 router.post("/roomhistory", roomofuser);
 router.post("/updatestatusbyuser", updateRoomfromUser);
+
+router.post("/test", setAdminactiveinroom);
 
 export = router;

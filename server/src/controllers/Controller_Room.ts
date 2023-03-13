@@ -6,6 +6,8 @@ import {
   showRoomUser,
   showRoom,
   updatestatusRoombyUser,
+  updatestatusUserinRoombyID,
+  updateTopicRoombyID,
 } from "../services/Service_Room";
 
 const createRoom = async (req: Request, res: Response, next: NextFunction) => {
@@ -82,6 +84,22 @@ const joinRoom = async (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+const setAdminactiveinroom = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { roomid, userid } = req.body;
+  updateTopicRoombyID(roomid, userid)
+    .then((data: any) => {
+      res.status(200).json({ data: data });
+    })
+    .catch((err: any) => {
+      console.log(err.message);
+      res.status(503).json({ err: err.message });
+    });
+};
+
 export {
   createRoom,
   updateRoom,
@@ -89,4 +107,5 @@ export {
   showroom,
   roomofuser,
   updateRoomfromUser,
+  setAdminactiveinroom,
 };

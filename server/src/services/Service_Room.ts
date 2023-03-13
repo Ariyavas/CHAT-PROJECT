@@ -95,6 +95,39 @@ const updatestatusRoombyUser = async (userID: string, roomID: string) => {
   }
 };
 
+const updatestatusUserinRoombyID = async (
+  ID: string,
+  userid: string,
+  status: boolean
+) => {
+  try {
+    let room: any = await Room.findById(ID);
+
+    const result = room.user.map((item: any) => {
+      if (item.id_user == userid) {
+        item.status = status;
+      }
+      return item;
+    });
+    room.user = result;
+    await room.save();
+
+    return room;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const updateTopicRoombyID = async (ID: string, topic: string) => {
+  try {
+    const room = await Room.updateOne({ _id: ID }, { $set: { topic: topic } });
+
+    return room;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const joinRoombyID = async (roomID: string, userID: string) => {
   try {
     const room: any = await Room.findById(roomID);
@@ -131,6 +164,20 @@ const joinRoombyID = async (roomID: string, userID: string) => {
   }
 };
 
+const checkActiveBot = async (ID: string) => {
+  try {
+    const room: any = await Room.findById(ID);
+
+    if (room.status_active) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
 const validateRoom = (room: any, user: any) => {
   for (const data of room.user) {
     if (data.id_user == user._id) {
@@ -149,4 +196,7 @@ export {
   showRoom,
   updatestatusRoombyUser,
   updatestatusactiveRoombyID,
+  updatestatusUserinRoombyID,
+  updateTopicRoombyID,
+  checkActiveBot
 };

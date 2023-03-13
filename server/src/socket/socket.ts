@@ -5,6 +5,9 @@ import {
   showRoom,
   updatestatusRoombyID,
   updatestatusactiveRoombyID,
+  updatestatusUserinRoombyID,
+  updateTopicRoombyID,
+  checkActiveBot,
 } from "../services/Service_Room";
 import { MessageofRoom } from "../services/Service_Message";
 import { RESAIFAQS } from "../services/Service_AI";
@@ -74,14 +77,16 @@ const socketStart = (io: any) => {
         // <== ADMIN ==>
         roomid = socket_data.room_id;
 
-        listdataroom = await showRoomUser();
-
         if (roomid == undefined || roomid == "") {
+          listdataroom = await showRoomUser();
           socket.emit("room_active", listdataroom);
         } else {
           messagedetail = await MessageofRoom(roomid);
           await saveconnectedtimeDB(roomid, socket_data.user_id);
           const joinroom = await joinRoombyID(roomid, socket_data.user_id);
+          await updatestatusUserinRoombyID(roomid, socket_data.user_id, true);
+
+          listdataroom = await showRoomUser();
 
           socket.join(roomid);
           io.emit("room_active", listdataroom);
@@ -121,35 +126,40 @@ const socketStart = (io: any) => {
           return console.log(`not found group`);
         }
         const infodialog = await messaging(roomid, socket_data.user_id, text);
+        const checkBotActive: any = await checkActiveBot(roomid);
 
-        const key: any = await searchkeyword(text);
-        const botid: string = "63dcb9fc398eabe2233e181c";
-        if (key != false) {
-          const infodialog = await messaging(roomid, botid, key.message);
-          setTimeout(() => {
-            io.to(roomid).emit("message", { infodialog });
-          }, 500);
-        } else {
-          const message: any = await RESAIFAQS(text);
-          const alertword: string =
-            "I don't understand the question please wait for the experts coming in.";
-          if (message == alertword) {
-            await updatestatusactiveRoombyID(roomid, true);
+        if (!checkBotActive) {
+          const key: any = await searchkeyword(text);
+          const botid: string = "63dcb9fc398eabe2233e181c";
+          if (key != false) {
+            const infodialog = await messaging(roomid, botid, key.message);
+            setTimeout(() => {
+              io.to(roomid).emit("message", { infodialog });
+            }, 500);
+          } else {
+            const message: any = await RESAIFAQS(text);
+            const alertword: string =
+              "I don't understand the question please wait for the experts coming in.";
 
-            listdataroom = await showRoomUser();
-            io.emit("room_active", listdataroom);
+            if (message == alertword) {
+              await updateTopicRoombyID(roomid, text);
+              await updatestatusactiveRoombyID(roomid, true);
+
+              listdataroom = await showRoomUser();
+              io.emit("room_active", listdataroom);
+            }
+            const infodialog = await messaging(roomid, botid, message);
+            setTimeout(() => {
+              io.to(roomid).emit("message", { infodialog });
+            }, 500);
           }
-          const infodialog = await messaging(roomid, botid, message);
-          setTimeout(() => {
-            io.to(roomid).emit("message", { infodialog });
-          }, 500);
         }
+
         io.to(roomid).emit("message", { infodialog });
       });
 
       socket.on("success_faqs", async function (roomid: any) {
         if (roomid == undefined) {
-          console.log(roomid);
           return null;
         }
         const infostatus = await updatestatusRoombyID(roomid, false);
@@ -163,20 +173,32 @@ const socketStart = (io: any) => {
         let search: string = socket_data.room_id;
         let finduserroombyiduser: any;
 
+        console.log(search);
+
         if (search == undefined || search == "") {
           return null;
         } else {
           if (search == undefined) {
             search = socket_data.user_id;
             finduserroombyiduser = await finddatafromDB(search, "R");
-
+            await updatestatusUserinRoombyID(
+              roomid,
+              socket_data.user_id,
+              false
+            );
             await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
           } else {
             finduserroombyiduser = await finddatafromDB(search, "RID");
-
+            await updatestatusUserinRoombyID(
+              roomid,
+              socket_data.user_id,
+              false
+            );
             await savedisconnectDB(finduserroombyiduser, socket_data.user_id);
           }
         }
+        listdataroom = await showRoomUser();
+        io.emit("room_active", listdataroom);
         console.log(`Disconnected with socket_id : ${socket.id}`);
       });
     } catch (error: any) {

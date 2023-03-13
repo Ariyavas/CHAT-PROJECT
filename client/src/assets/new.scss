@@ -7,6 +7,10 @@ $baseHistoryBox: #397cff;
 $baseChatBoxUser: #4dff0e;
 $baseQA: #ffdc2e;
 
+* {
+  margin: 0;
+}
+
 .login {
   min-height: 100vh;
   display: flex;
@@ -187,17 +191,16 @@ $baseQA: #ffdc2e;
     display: grid;
     place-content: end;
     -webkit-tap-highlight-color: transparent;
-    z-index: 2;
     .menu {
       position: relative;
-      top: 290px;
+      top: 40vh;
       right: 80px;
       padding: 30px;
       background: #e8e8f3;
       border-radius: 100%;
       cursor: pointer;
       box-shadow: 7px 7px 15px rgba(55, 84, 170, 0.15),
-        -7px -7px 20px rgba(255, 255, 255, 1),
+        -7px -7px 25px rgba(255, 255, 255, 1),
         inset 0px 0px 4px rgba(255, 255, 255, 0.2),
         inset 7px 7px 15px rgba(55, 84, 170, 0),
         inset -7px -7px 20px rgba(255, 255, 255, 0),
@@ -234,7 +237,7 @@ $baseQA: #ffdc2e;
           pointer-events: auto;
           &:first-of-type {
             bottom: 40px;
-            right: 70px;
+            right: 60px;
             background: url("https://www.flaticon.com/svg/vstatic/svg/3914/3914149.svg?token=exp=1678536964~hmac=1dae4e7d1f9fb9fd01df3df19372b7a1")
               no-repeat 50%/50% #e8e8f3;
           }
@@ -246,7 +249,7 @@ $baseQA: #ffdc2e;
           }
           &:last-of-type {
             bottom: 40px;
-            right: -70px;
+            right: -60px;
             background: url("https://cdn-icons-png.flaticon.com/512/2529/2529508.png")
               no-repeat 50% 45%/50% 45% #e8e8f3;
             transition-delay: 0.1s;
@@ -1037,4 +1040,13 @@ $baseQA: #ffdc2e;
       }
     }
   }
+}
+
+iframe {
+  display: blorck; /* iframes are inline by default */
+  position: fixed;
+  background: #000;
+  border: none; /* Reset default border */
+  height: 100vh; /* Viewport-relative units */
+  width: 100vw;
 }

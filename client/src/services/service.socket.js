@@ -60,7 +60,7 @@ class SocketioService {
     });
     // <-- connect room -->
     this.socket.on("room", (data) => {
-      console.log("room", data);
+      // console.log("room", data);
       usedatafromstore.setroom(data);
     });
     // <-- connect message -->
@@ -78,7 +78,7 @@ class SocketioService {
     });
     // <-- connect disconnect -->
     this.socket.on("disconnect", (data) => {
-      console.log("disconnect", data);
+      console.log(data);
     });
   }
 
@@ -103,6 +103,7 @@ class SocketioService {
   closeTap(roomid) {
     if (this.socket) {
       this.socket.emit("success_faqs", roomid);
+      this.socket.disconnect();
     }
   }
 

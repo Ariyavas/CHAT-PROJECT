@@ -1,13 +1,13 @@
 <template>
     <div>
-        <header>
+        <!-- <header>
             <nav>
                 <ul class="menuItems">
                     <li><a data-item='Chat' @click="changpage">chat</a></li>
                     <li v-if="role == 'Admin'"><a data-item='Management' href="/qamanagement">management</a></li>
                 </ul>
             </nav>
-        </header>
+        </header> -->
         <div class="home-content" v-if="role == 'User'">
             <div class="menu" onclick="this.classList.toggle('open')">
                 <div class="button" @click="switchoption('faqs')"></div>
@@ -17,6 +17,8 @@
         </div>
         <div class="home-content" v-else>
             <div class="menu" onclick="this.classList.toggle('open')">
+                <div class="button" @click="changpageMG"></div>
+                <div class="button" @click="changpage"></div>
                 <div class="button" @click="signout"></div>
             </div>
         </div>
@@ -28,12 +30,12 @@
                 <boxfaqs />
             </div>
         </div>
-        <footer>
+        <!-- <footer>
             <div class="footer-content">
                 <h3>NAKAMOTO FOOTER</h3>
                 <p>this footer page so good.</p>
             </div>
-        </footer>
+        </footer> -->
     </div>
 </template>
 
@@ -47,6 +49,7 @@ export default {
     components: {
         boxchat,
         boxfaqs
+
     },
     data() {
         return {
@@ -78,6 +81,9 @@ export default {
             else {
                 router.push('/home')
             }
+        },
+        changpageMG() {
+            router.push('/qamanagement')
         }
     }
 }
