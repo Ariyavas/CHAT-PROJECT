@@ -22,7 +22,7 @@
                 <div class="button" @click="signout"></div>
             </div>
         </div>
-        <div class="chatV2" style="position: fixed; top: 130px; right: 240px;">
+        <div class="chatV2" style="position: fixed; bottom: 10%; right: 240px;">
             <div v-if="screen == 'chat'">
                 <boxchat />
             </div>

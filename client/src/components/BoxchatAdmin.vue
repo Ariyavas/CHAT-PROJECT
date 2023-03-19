@@ -1,5 +1,5 @@
 <template>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
     <div id="container">
         <div>
             <aside class="left">
@@ -15,7 +15,7 @@
                             </div>
                             <div v-else>
                                 <div v-if="list.user.length > 1">
-                                    <li @click="selectionRoom(list._id)" style="background-color: red;">
+                                    <li @click="selectionRoom(list._id)" style="background-color: red">
                                         <a>{{ list.topic }}</a><i class="glyphicon glyphicon-remove"></i>
                                     </li>
                                 </div>
@@ -31,8 +31,10 @@
             </aside>
         </div>
         <div>
-            <main class="right"
-                :style="{ visibility: activechat ? '' : 'hidden', transform: activechat ? '' : 'scale(0)' }">
+            <main class="right" :style="{
+                visibility: activechat ? '' : 'hidden',
+                transform: activechat ? '' : 'scale(0)',
+            }">
                 <div class="chatbox-frame">
                     <div class="chatbox" id="app">
                         <div class="chatbox__header">
@@ -66,7 +68,8 @@
                             <input class="chatbox__input" placeholder="Aa" @keyup.enter="sendmessage"
                                 v-model="newmessage" />
                             <div class="chatbox__tooltip chatbox__tooltip--bottom">
-                                Press enter to send the message</div>
+                                Press enter to send the message
+                            </div>
                             <!--.chatbox__button +-->
                         </div>
                     </div>
@@ -77,26 +80,26 @@
 </template>
 
 <script>
-import serviceSocket from '../services/service.socket';
-import { useDataStore } from '../store/store';
+import serviceSocket from "../services/service.socket";
+import { useDataStore } from "../store/store";
 
 export default {
     setup() {
-        const datastore = useDataStore()
-        return { datastore }
+        const datastore = useDataStore();
+        return { datastore };
     },
     data() {
         return {
-            userid: localStorage.getItem('userid'),
-            token: localStorage.getItem('token'),
+            userid: localStorage.getItem("userid"),
+            token: localStorage.getItem("token"),
             history: [],
             newmessage: "",
             roomid: "",
             activechat: false,
-        }
+        };
     },
     created() {
-        this.datastore.setroom(this.roomid)
+        this.datastore.setroom(this.roomid);
         serviceSocket.setupSocketConnectionForadmin();
     },
     beforeUnmount() {
@@ -109,14 +112,19 @@ export default {
             // We have to move our method to a handler field
             handler() {
                 this.checkscroll();
-            }
-        }
+            },
+        },
     },
     methods: {
         sendmessage() {
-            if (this.newmessage != undefined || this.newmessage != null || this.newmessage != "" || this.newmessage != "\n") {
+            if (
+                this.newmessage != undefined ||
+                this.newmessage != null ||
+                this.newmessage != "" ||
+                this.newmessage != "\n"
+            ) {
                 serviceSocket.sendMessage(this.newmessage);
-                this.newmessage = ""
+                this.newmessage = "";
             }
         },
         scrollBottom() {
@@ -126,34 +134,40 @@ export default {
             }, 200);
         },
         checkscroll() {
-            const progress = (this.$refs.chat.scrollTop / (this.$refs.chat.scrollHeight - this.$refs.chat.clientHeight)) * 100
+            const progress =
+                (this.$refs.chat.scrollTop /
+                    (this.$refs.chat.scrollHeight - this.$refs.chat.clientHeight)) *
+                100;
 
             if (progress >= 80) {
-                this.scrollBottom()
+                this.scrollBottom();
             }
         },
         selectionRoom(room) {
             if (room == this.roomid) {
                 console.log("YOU CONNECTED");
-                this.roomid = ""
-                this.datastore.sethistory([])
-                this.activechat = false
-                this.datastore.setroom(this.roomid)
+                this.roomid = "";
+                this.datastore.sethistory([]);
+                this.activechat = false;
+                this.datastore.setroom(this.roomid);
                 serviceSocket.disconnect();
                 serviceSocket.setupSocketConnectionForadmin();
-                return false
+                return false;
             } else {
                 serviceSocket.disconnect();
-                this.roomid = room
-                this.datastore.setroom(this.roomid)
+                this.roomid = room;
+                this.datastore.setroom(this.roomid);
                 serviceSocket.setupSocketConnectionForadmin();
-                this.activechat = true
+                this.activechat = true;
             }
         },
         close(roomid, index) {
-            this.datastore.removeactivechat(index)
-            serviceSocket.closeTap(roomid)
-        }
-    }
-}
+            this.$toast.success(`SUCCESS`, {
+                position: "top",
+            });
+            this.datastore.removeactivechat(index);
+            serviceSocket.closeTap(roomid);
+        },
+    },
+};
 </script>

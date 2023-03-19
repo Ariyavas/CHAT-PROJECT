@@ -8,7 +8,8 @@ import {
   updateAns,
   ShowQA,
   deleteDATAFAQs,
-  keyword
+  keyword,
+  ShowAnsByUserid,
 } from "../controllers/Controller_Qa";
 import { verifytoken } from "../middleware/validateJWTtoken";
 
@@ -25,5 +26,7 @@ router.get("/showallqa", ShowQA);
 router.post("/deletedatafaqs", verifytoken, deleteDATAFAQs);
 
 router.post("/keyword", keyword);
+
+router.post("/showansbyuserid", verifytoken, ShowAnsByUserid);
 
 export = router;

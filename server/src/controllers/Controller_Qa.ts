@@ -9,6 +9,7 @@ import {
   showQuestionAndAnswer,
   deleteQA,
   searchkeyword,
+  showAnswerbyID,
 } from "../services/Service_Qa";
 
 const Questionrequest = async (
@@ -61,6 +62,21 @@ const ShowAns = async (req: Request, res: Response, next: NextFunction) => {
     });
 };
 
+const ShowAnsByUserid = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { questionid } = req.body;
+  showAnswerbyID(questionid)
+    .then((data: any) => {
+      res.status(200).json({ data: data });
+    })
+    .catch((err: any) => {
+      res.status(500).json({ err: err.message });
+    });
+};
+
 const addFaqsdata = async (req: Request, res: Response, next: NextFunction) => {
   const { questionmassage, answermassage, number, group } = req.body;
   addQatoDatabase(questionmassage, answermassage, group, number)
@@ -73,8 +89,8 @@ const addFaqsdata = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const updateAns = async (req: Request, res: Response, next: NextFunction) => {
-  const { questionid, answer } = req.body;
-  updateAnswer(answer, questionid)
+  const { questionid, answer, group } = req.body;
+  updateAnswer(answer, questionid, group)
     .then((data: any) => {
       res.status(200).json({ data: data });
     })
@@ -109,7 +125,7 @@ const deleteDATAFAQs = async (
 };
 
 const keyword = async (req: Request, res: Response, next: NextFunction) => {
-  const { message } = req.body
+  const { message } = req.body;
   searchkeyword(message)
     .then((data: any) => {
       res.status(200).json({ data: data });
@@ -128,4 +144,5 @@ export {
   ShowQA,
   deleteDATAFAQs,
   keyword,
+  ShowAnsByUserid
 };

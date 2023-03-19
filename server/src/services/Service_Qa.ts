@@ -74,6 +74,16 @@ const showAnswer = async () => {
   }
 };
 
+const showAnswerbyID = async (ID: string) => {
+  try {
+    const ans = await Answer.findOne({ id_question: ID });
+
+    return ans;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const addQatoDatabase = async (
   questionmassage: string,
   answermassage: any,
@@ -112,10 +122,15 @@ const addQatoDatabase = async (
   }
 };
 
-const updateAnswer = async (answer: string, questionid: string) => {
+const updateAnswer = async (
+  answer: string,
+  questionid: string,
+  group: string
+) => {
   try {
     const ans: any = await Answer.findOne({ id_question: questionid });
     ans.message = answer;
+    ans.group = group;
 
     await ans.save();
 
@@ -298,4 +313,5 @@ export {
   searchgroup,
   searchkeyword,
   sentQuestion,
+  showAnswerbyID
 };

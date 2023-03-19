@@ -36,7 +36,7 @@
         <div>
             <label for="lname">Answer</label>
             <input v-model="answermassage" type="text" id="lname" name="lastname" placeholder="Answer..">
-            <i class="gg-push-chevron-up-o" @click="pushDatainV2"></i>
+            <!-- <i class="gg-push-chevron-up-o" @click="pushDatainV2"></i> -->
         </div>
         <div>
             <label for="group">Group</label>

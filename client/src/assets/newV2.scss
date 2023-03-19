@@ -1,5 +1,5 @@
-$boxchat-width: 400px;
-$boxchat-hight: 670px;
+$boxchat-width: 400px; //400
+$boxchat-hight: 670px; //670
 
 $basecolor-black: #000;
 $basecolor-red: #ff0000;
@@ -188,7 +188,16 @@ $basecolor-yellow: #ffff00;
         font-size: 18px;
         font-weight: bold;
         word-wrap: break-word;
+        margin-bottom: 15px;
         border-bottom: $basecolor-black solid 1px;
+        transition: 1s;
+      }
+
+      .faqs-content-box:hover {
+        scale: 0.95;
+        background-color: rgba($color: $basecolor-white, $alpha: 0.8);
+        border-radius: 15px;
+        padding: 15px;
       }
     }
 

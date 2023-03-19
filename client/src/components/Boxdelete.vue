@@ -1,6 +1,6 @@
 <template>
     <div class="modal" :style="{ display: modalstatus ? '' : 'none' }">
-        <div class="modal-confirm btn-border-animation">
+        <div class="modal-confirm">
             <span class="title">Ask</span>
             <p class="contents">are u sure for delete question ?</p>
             <div class="footer">
