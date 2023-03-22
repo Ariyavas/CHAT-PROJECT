@@ -39,10 +39,16 @@ export default {
         axios(config)
             .then((response) => {
                 this.dataQA = response.data.data
+                this.sort();
             })
             .catch(function (error) {
                 console.log(error);
             });
+    },
+    methods: {
+        sort() {
+            this.dataQA = this.dataQA.sort((a, b) => { return b.count - a.count })
+        }
     }
 }
 </script>

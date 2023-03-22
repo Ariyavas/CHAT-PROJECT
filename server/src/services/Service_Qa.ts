@@ -111,12 +111,11 @@ const addQatoDatabase = async (
           create_time: new Date(),
           status: true,
         });
-
         await ans.save();
       }
     }
 
-    return { quest };
+    return quest
   } catch (error) {
     throw error;
   }
@@ -155,6 +154,7 @@ const showQuestionAndAnswer = async () => {
               A: dataans.message,
               id_question: dataqa._id,
               id_answer: dataans._id,
+              count: dataqa.number
             },
           ];
         }
@@ -271,10 +271,10 @@ const searchkeyword = async (message: string) => {
       count: calculate[item].length,
       persen: ((calculate[item].length * 100) / sentence.length).toFixed(2),
     };
-  });
+  }).filter((item: any) => item.count >= afterinput.length);
 
-  // console.log(summary.sort((a: any, b: any) => b.count - a.count));
-
+  // console.log(summary.sort((a: any, b: any) => b.count - a.count).filter((item: any) => item.count >= afterinput.length));
+  
   const questionexpected: any = summary.sort(
     (a: any, b: any) => b.count - a.count
   )[0];
@@ -284,11 +284,12 @@ const searchkeyword = async (message: string) => {
   if (questionexpected === undefined) {
     return false;
   }
-  const num = sentence.length * 0.4;
 
-  if (num > questionexpected.count) {
-    return false;
-  }
+  // const num = sentence.length * 0.4;
+
+  // if (num > questionexpected.count) {
+  //   return false;
+  // }
 
   for (const item of qa) {
     if (item.message == questionexpected.word) {
@@ -297,6 +298,10 @@ const searchkeyword = async (message: string) => {
   }
 
   const ans = await Answer.findOne({ id_question: answerofquestion._id });
+
+  const updatecount: any = await QA.findById(answerofquestion._id)
+  updatecount.number = updatecount.number + 1;
+  await updatecount.save();
 
   return ans;
 };

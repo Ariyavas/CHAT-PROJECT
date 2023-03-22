@@ -17,6 +17,7 @@ import Room from "../models/model_room";
 
 import { messaging } from "../middleware/messagesoket";
 import {
+  addQatoDatabase,
   searchgroup,
   searchkeyword,
   sentQuestion,
@@ -148,7 +149,11 @@ const socketStart = (io: any) => {
               listdataroom = await showRoomUser();
               io.emit("room_active", listdataroom);
             }
+
             const infodialog = await messaging(roomid, botid, message);
+            const g = "waiting update to server"
+            await addQatoDatabase(text, [message], g, 1)
+
             setTimeout(() => {
               io.to(roomid).emit("message", { infodialog });
             }, 500);
@@ -172,8 +177,6 @@ const socketStart = (io: any) => {
       socket.on("disconnect", async function () {
         let search: string = socket_data.room_id;
         let finduserroombyiduser: any;
-
-        console.log(search);
 
         if (search == undefined || search == "") {
           return null;

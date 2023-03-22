@@ -17,9 +17,9 @@
         </div>
         <div class="home-content" v-else>
             <div class="menu" onclick="this.classList.toggle('open')">
-                <div class="button" @click="changpageMG"></div>
-                <div class="button" @click="changpage"></div>
-                <div class="button" @click="signout"></div>
+                <div class="button-admin" @click="changpageMG"></div>
+                <div class="button-admin" @click="changpage"></div>
+                <div class="button-admin" @click="signout"></div>
             </div>
         </div>
         <div class="chatV2" style="position: fixed; bottom: 10%; right: 240px;">
