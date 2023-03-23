@@ -115,7 +115,7 @@ const addQatoDatabase = async (
       }
     }
 
-    return quest
+    return quest;
   } catch (error) {
     throw error;
   }
@@ -154,7 +154,7 @@ const showQuestionAndAnswer = async () => {
               A: dataans.message,
               id_question: dataqa._id,
               id_answer: dataans._id,
-              count: dataqa.number
+              count: dataqa.number,
             },
           ];
         }
@@ -265,16 +265,18 @@ const searchkeyword = async (message: string) => {
     return r;
   }, {});
 
-  const summary = Object.keys(calculate).map((item) => {
-    return {
-      word: item,
-      count: calculate[item].length,
-      persen: ((calculate[item].length * 100) / sentence.length).toFixed(2),
-    };
-  }).filter((item: any) => item.count >= afterinput.length);
+  const summary = Object.keys(calculate)
+    .map((item) => {
+      return {
+        word: item,
+        count: calculate[item].length,
+        persen: ((calculate[item].length * 100) / sentence.length).toFixed(2),
+      };
+    })
+    .filter((item: any) => item.count >= afterinput.length);
 
   // console.log(summary.sort((a: any, b: any) => b.count - a.count).filter((item: any) => item.count >= afterinput.length));
-  
+
   const questionexpected: any = summary.sort(
     (a: any, b: any) => b.count - a.count
   )[0];
@@ -299,7 +301,7 @@ const searchkeyword = async (message: string) => {
 
   const ans = await Answer.findOne({ id_question: answerofquestion._id });
 
-  const updatecount: any = await QA.findById(answerofquestion._id)
+  const updatecount: any = await QA.findById(answerofquestion._id);
   updatecount.number = updatecount.number + 1;
   await updatecount.save();
 
@@ -318,5 +320,5 @@ export {
   searchgroup,
   searchkeyword,
   sentQuestion,
-  showAnswerbyID
+  showAnswerbyID,
 };

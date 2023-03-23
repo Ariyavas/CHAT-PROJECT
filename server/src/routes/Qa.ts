@@ -23,7 +23,7 @@ router.get("/showanswer", verifytoken, ShowAns);
 router.post("/addfaqs", verifytoken, addFaqsdata);
 router.post("/ansupdate", verifytoken, updateAns);
 router.get("/showallqa", ShowQA);
-router.post("/deletedatafaqs", verifytoken, deleteDATAFAQs);
+router.delete("/deletedatafaqs", verifytoken, deleteDATAFAQs);
 
 router.post("/keyword", keyword);
 
