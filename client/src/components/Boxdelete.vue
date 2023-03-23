@@ -63,7 +63,7 @@ export default {
             });
 
             var config = {
-                method: 'post',
+                method: 'delete',
                 maxBodyLength: Infinity,
                 url: 'http://localhost:3000/qa/deletedatafaqs',
                 headers: {
