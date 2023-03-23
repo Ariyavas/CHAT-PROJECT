@@ -11,5 +11,3 @@ OPENAI_API_KEY= (your api key)
 SERVER_URL = (your server port)
 
 <!-- Hi my name is ariyavas -->
-
--Hi🤑
