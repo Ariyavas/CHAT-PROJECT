@@ -16,7 +16,6 @@
 
             <button @click="login">LOGIN</button>
             <div class="remember-me--forget-password">
-                <p>create accout click here</p>
             </div>
         </div>
     </div>

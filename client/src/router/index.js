@@ -12,34 +12,46 @@ const router = createRouter({
     {
       path: "/",
       name: "login",
+      meta: { title: "login page" },
       component: Loginpage,
     },
     {
       path: "/home",
       name: "home",
+      meta: { title: "home page" },
       component: Home,
     },
     {
       path: "/management",
       name: "chatAdmin",
+      meta: { title: "chat admin" },
       component: Chatadmin,
     },
     {
       path: "/qamanagement",
       name: "QA",
+      meta: { title: "QA" },
       component: QA,
     },
     {
       path: "/qaupdate",
       name: "update",
+      meta: { title: "update QA" },
       component: QAedit,
     },
     {
       path: "/qadelete",
       name: "delete",
+      meta: { title: "delete QA" },
       component: Deletepage,
     },
   ],
+});
+
+router.beforeEach((to, from, next) => {
+  // console.log(to);
+  document.title = to.meta.title;
+  next();
 });
 
 export default router;
