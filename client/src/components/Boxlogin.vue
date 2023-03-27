@@ -28,8 +28,8 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            username: "Joh",
-            password: "1234",
+            username: "",
+            password: "",
         }
     },
     methods: {
@@ -42,7 +42,7 @@ export default {
             var config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://127.0.0.1:3000/user/login',
+                url: 'http://localhost:3000/user/login',
                 headers: {
                     'Content-Type': 'application/json'
                 },
